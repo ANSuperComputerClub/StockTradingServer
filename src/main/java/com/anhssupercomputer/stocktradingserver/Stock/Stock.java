@@ -2,6 +2,8 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A representation of a Stock object, to be exchanged on the server by way of Orders.
@@ -39,6 +41,11 @@ public class Stock {
     private double dividend;
 
     /**
+     * Returns a list of all stocks
+     */
+    private static List<Stock> allStocks = new ArrayList<>();
+
+    /**
      * Full argument constructor for the Stock object
      *
      * @param name        The name of the stock, e.g. "Google"
@@ -54,6 +61,7 @@ public class Stock {
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = dividend;
+        allStocks.add(this);
     }
 
     /**
@@ -71,7 +79,13 @@ public class Stock {
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = 0;
+        allStocks.add(this);
     }
+
+    /**
+     * @return A list of all stocks
+     */
+    public static List<Stock> getAllStocks() { return allStocks; }
 
     /**
      * @return The name of the stock
