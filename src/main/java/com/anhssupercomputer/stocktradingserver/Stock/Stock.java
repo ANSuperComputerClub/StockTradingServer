@@ -40,29 +40,6 @@ public class Stock {
      */
     private double dividend;
 
-    /**
-     * Returns a list of all stocks
-     */
-    private static List<Stock> allStocks = new ArrayList<>();
-
-    /**
-     * Full argument constructor for the Stock object
-     *
-     * @param name        The name of the stock, e.g. "Google"
-     * @param ticker      The ticker for the stock, e.g. "GOOG"
-     * @param price       The price of the stock, leave at 5 for default
-     * @param totalVolume The total available volume
-     * @param dividend    The dividend earned per month
-     */
-    public Stock(String name, String ticker, BigDecimal price, int totalVolume, double dividend) {
-        this.name = name;
-        this.ticker = ticker;
-        this.price = price;
-        this.totalVolume = totalVolume;
-        this.availableVolume = totalVolume;
-        this.dividend = dividend;
-        allStocks.add(this);
-    }
 
     /**
      * Stock constructor without dividend
@@ -79,13 +56,35 @@ public class Stock {
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = 0;
-        allStocks.add(this);
     }
 
     /**
-     * @return A list of all stocks
+     * Full argument constructor for the Stock object
+     *
+     * @param name        The name of the stock, e.g. "Google"
+     * @param ticker      The ticker for the stock, e.g. "GOOG"
+     * @param price       The price of the stock, leave at 5 for default
+     * @param totalVolume The total available volume
+     * @param dividend    The dividend earned per month
      */
-    public static List<Stock> getAllStocks() { return allStocks; }
+    public Stock(String name, String ticker, BigDecimal price, int totalVolume, double dividend) {
+        this(name, ticker, price, totalVolume);
+        this.dividend = dividend;
+    }
+
+    /**
+     * Create a Stock and save it permanently
+     *
+     * @param name        The name of the stock, e.g. "Google"
+     * @param ticker      The ticker for the stock, e.g. "GOOG"
+     * @param price       The price of the stock, leave at 5 for default
+     * @param totalVolume The total available volume
+     * @param service     The service that should store this stock
+     */
+    public Stock(String name, String ticker, BigDecimal price, int totalVolume, StockService service) {
+        this(name, ticker, price, totalVolume);
+        service.saveStock(this);
+    }
 
     /**
      * @return The name of the stock
@@ -136,5 +135,18 @@ public class Stock {
         return true;
     }
 
-
+    /**
+     * @return A representation of the stock as a string
+     */
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "name='" + name + '\'' +
+                ", ticker='" + ticker + '\'' +
+                ", price=" + price +
+                ", totalVolume=" + totalVolume +
+                ", availableVolume=" + availableVolume +
+                ", dividend=" + dividend +
+                '}';
+    }
 }

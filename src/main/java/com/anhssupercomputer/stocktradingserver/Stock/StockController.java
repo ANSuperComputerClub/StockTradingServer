@@ -1,22 +1,47 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("stock")
 public class StockController {
+    /**
+     * The stock service that handles the database, caching, and management of Stocks
+     */
+    @Autowired
+    private StockService service;
+
+    /**
+     * Initialize the Stock Controller
+     * @param service the StockService to use
+     */
+    public StockController(StockService service) {
+        this.service = service;
+    }
+
+    /**
+     * @return A list of all stocks stored
+     */
     @GetMapping
-    public Stock getStock() {
-        return new Stock(
-                "Apple",
-                "AAPL",
-                new BigDecimal("141.43"),
-                5000000,
-                0.05
-        );
+    public List<Stock> getStocks() {
+        return service.getStockList();
+    }
+
+    /**
+     * Creates a new stock
+     * @param name the name of the stock
+     * @param ticker the stock's ticker
+     * @param price the stock's price
+     * @param totalVolume the total volume of the stock
+     * @return a message if the creation was successful, an error otherwise
+     */
+    @PostMapping
+    public String createStock(@RequestBody String name, @RequestBody String ticker, @RequestBody BigDecimal price, @RequestBody int totalVolume) {
+        Stock stock = new Stock(name, ticker, price, totalVolume, service);
+        return "Successfully added Stock: \n" + stock.toString();
     }
 }
