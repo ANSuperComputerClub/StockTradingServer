@@ -1,5 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Order;
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
@@ -39,7 +40,7 @@ public class OrderController {
      * @return a message verifying the success
      */
     @PostMapping
-    public String createOrder(@RequestBody int id, @RequestBody String ticker, @RequestBody String type, @RequestBody int quantity) throws NotFoundException {
+    public String createOrder(@RequestBody int id, @RequestBody String ticker, @RequestBody String type, @RequestBody int quantity) throws NotFoundException, IllegalTransactionException {
         // Parse data
         Stock stock = stockService.getStockByTicker(ticker);
         OrderType orderType = type.equals("BUY") ? OrderType.BUY : OrderType.SELL;
