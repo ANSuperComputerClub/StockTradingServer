@@ -1,5 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -8,6 +9,24 @@ public class MarketService {
 
     public MarketService() {
 
+    }
+
+    /**
+     * @return True if successful
+     */
+    public boolean startMarket() throws NoMarketException {
+        if(market == null) {
+            throw new NoMarketException();
+        }
+
+        return market.startMarket();
+    }
+
+    /**
+     * @return True if successful
+     */
+    public boolean stopMarket() {
+        return market.stopMarket();
     }
 
     /** Creates a new market */

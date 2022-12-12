@@ -1,5 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,19 +15,19 @@ public class MarketController {
     }
 
     /**
-     * @return True
+     * @return True if successful
      */
     @GetMapping("start")
-    public boolean startMarket() {
-
+    public boolean startMarket() throws NoMarketException {
+        return service.startMarket();
     }
 
     /**
-     * @return True
+     * @return True if successful
      */
     @GetMapping("stop")
     public boolean stopMarket() {
-
+        return service.stopMarket();
     }
 
     /**
@@ -35,5 +36,10 @@ public class MarketController {
     @PostMapping("create")
     public boolean createMarket(@RequestBody int traderNumber, @RequestBody int period) {
         return service.createMarket(traderNumber, period);
+    }
+
+    @ExceptionHandler
+    public Exception handleException(Exception e) {
+        return e;
     }
 }
