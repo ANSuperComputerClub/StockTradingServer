@@ -41,4 +41,12 @@ public class TraderService {
         throw new NotFoundException();
     }
 
+    /**
+     * Adds a trader to the trader list
+     * @param trader
+     */
+    public void addTrader(Trader trader) {
+        traderList.add(trader);
+    }
+
 }

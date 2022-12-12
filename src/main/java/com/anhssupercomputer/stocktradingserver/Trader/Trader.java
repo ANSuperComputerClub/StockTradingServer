@@ -40,6 +40,10 @@ public class Trader {
         return portfolio.getTransactionHistory();
     }
 
+    /**
+     * Increments through ids starting from 0 when a trader is created
+     * @return
+     */
     private static int makeId() {
         try {
             return nextId;
