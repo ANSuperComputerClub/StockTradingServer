@@ -12,6 +12,11 @@ public class Trader {
     private String username;
     private String key;
 
+    /**
+     * Default singleton trader
+     */
+    private static Trader defaultTrader;
+
     private Portfolio portfolio;
 
     public Trader(String username, String key) {
@@ -50,5 +55,18 @@ public class Trader {
         } finally {
             nextId++;
         }
+    }
+
+    /**
+     * Gets a default trader with id -1
+     * @return
+     */
+    public static Trader getDefault() {
+        if(defaultTrader == null) {
+            defaultTrader = new Trader("Default", "");
+            defaultTrader.id = -1;
+        }
+
+        return defaultTrader;
     }
 }
