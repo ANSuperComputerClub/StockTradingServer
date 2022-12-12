@@ -1,6 +1,9 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
+import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import com.anhssupercomputer.stocktradingserver.Utility.AbstractSystem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 public class Market extends AbstractSystem {
 

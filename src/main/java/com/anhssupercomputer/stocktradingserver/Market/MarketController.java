@@ -26,7 +26,7 @@ public class MarketController {
      * @return True if successful
      */
     @GetMapping("stop")
-    public boolean stopMarket() {
+    public boolean stopMarket() throws NoMarketException {
         return service.stopMarket();
     }
 

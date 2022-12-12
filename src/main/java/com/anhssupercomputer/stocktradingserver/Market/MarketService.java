@@ -25,7 +25,11 @@ public class MarketService {
     /**
      * @return True if successful
      */
-    public boolean stopMarket() {
+    public boolean stopMarket() throws NoMarketException {
+        if(market == null) {
+            throw new NoMarketException();
+        }
+
         return market.stopMarket();
     }
 
