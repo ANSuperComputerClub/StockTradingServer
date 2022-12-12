@@ -11,6 +11,7 @@ public class Trader {
     private int id;
     private String username;
     private String key;
+    private boolean isFakeTrader;
 
     /**
      * Default singleton trader
@@ -23,6 +24,7 @@ public class Trader {
         id = makeId();
         this.username = username;
         this.key = key;
+        isFakeTrader = false;
     }
 
     public int getId() {
@@ -68,5 +70,15 @@ public class Trader {
         }
 
         return defaultTrader;
+    }
+
+    /**
+     * Factory for making fake traders. This is not a constructor so it does not get confused with a standard trader
+     * @return
+     */
+    public static Trader makeFakeTrader() {
+        Trader fakeTrader = new Trader("", "");
+        fakeTrader.isFakeTrader = true;
+        return fakeTrader;
     }
 }

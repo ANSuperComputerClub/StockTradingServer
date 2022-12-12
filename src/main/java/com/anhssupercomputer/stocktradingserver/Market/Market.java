@@ -1,5 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
+import com.anhssupercomputer.stocktradingserver.Trader.Trader;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import com.anhssupercomputer.stocktradingserver.Utility.AbstractSystem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +9,23 @@ import org.springframework.stereotype.Component;
 public class Market extends AbstractSystem {
 
     private boolean stopped;
+    TraderService traderService;
 
     /**
      * Simulates the stock market
      * @param traderNumber number of trader
      * @param period period in ms that the simulation runs at
      */
-    public Market(int traderNumber, int period) {
+    public Market(int traderNumber, int period, TraderService traderService) {
         super(period);
+        this.traderService = traderService;
+
+        // Reset the trader list
+        traderService.clearTraders();
+
+        for(int i = 0; i < traderNumber; i++) {
+            traderService.addTrader(Trader.makeFakeTrader());
+        }
     }
 
     /**

@@ -11,7 +11,7 @@ public class TraderService {
     /**
      * An in-memory cache of traders (decide later if we actually need this)
      */
-    private List<Trader> traderList;
+    private ArrayList<Trader> traderList;
 
     public TraderService() {
         // TODO: Actually initialize a database connection
@@ -47,6 +47,10 @@ public class TraderService {
      */
     public void addTrader(Trader trader) {
         traderList.add(trader);
+    }
+
+    public void clearTraders() {
+        traderList.clear();
     }
 
 }

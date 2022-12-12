@@ -1,14 +1,17 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
+import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MarketService {
     private Market market;
+    private TraderService traderService;
 
-    public MarketService() {
-
+    public MarketService(@Autowired TraderService traderService) {
+        this.traderService = traderService;
     }
 
     /**
@@ -41,7 +44,7 @@ public class MarketService {
                 market.terminate();
             }
 
-            market = new Market(traders, period);
+            market = new Market(traders, period, traderService);
             return true;
         } catch(Exception e) {
             // Returns false if a failure occurs.
