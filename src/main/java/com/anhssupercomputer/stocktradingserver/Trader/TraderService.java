@@ -53,4 +53,8 @@ public class TraderService {
         traderList.clear();
     }
 
+    public int getTraderNumber() {
+        return traderList.size();
+    }
+
 }

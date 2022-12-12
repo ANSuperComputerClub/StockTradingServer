@@ -51,4 +51,11 @@ public class MarketService {
             return false;
         }
     }
+
+    public boolean isMarketAlive() {
+        if(market == null || !market.isAlive() || market.isStopped())
+            return false;
+        else
+            return true;
+    }
 }

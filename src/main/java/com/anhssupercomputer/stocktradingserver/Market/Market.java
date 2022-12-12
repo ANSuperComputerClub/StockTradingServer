@@ -16,7 +16,7 @@ public class Market extends AbstractSystem {
      * @param traderNumber number of trader
      * @param period period in ms that the simulation runs at
      */
-    public Market(int traderNumber, int period, TraderService traderService) {
+    protected Market(int traderNumber, int period, TraderService traderService) {
         super(period);
         this.traderService = traderService;
 
@@ -55,6 +55,10 @@ public class Market extends AbstractSystem {
         } catch(Exception e) {
             return false;
         }
+    }
+
+    protected boolean isStopped() {
+        return stopped;
     }
 
     @Override

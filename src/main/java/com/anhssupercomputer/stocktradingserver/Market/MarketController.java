@@ -38,6 +38,11 @@ public class MarketController {
         return service.createMarket(traderNumber, period);
     }
 
+    @GetMapping("alive")
+    public boolean isMarketAlive() {
+        return service.isMarketAlive();
+    }
+
     @ExceptionHandler
     public Exception handleException(Exception e) {
         return e;
