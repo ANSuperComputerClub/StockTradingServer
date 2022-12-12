@@ -32,8 +32,8 @@ public class Trader {
         return key;
     }
 
-    public Map<Stock, Integer> getPortfolio() {
-        return portfolio.getStocks();
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
     public List<Order> getTransactionHistory() {
