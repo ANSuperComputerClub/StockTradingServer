@@ -23,8 +23,8 @@ public class StockService {
      * Returns a list of all stocks in the memory store
      * @return
      */
-    public Stock[] getStocks() {
-        return stockList.toArray(new Stock[0]);
+    public ArrayList<Stock> getStocks() {
+        return (ArrayList<Stock>) stockList.clone();
     }
 
     /**

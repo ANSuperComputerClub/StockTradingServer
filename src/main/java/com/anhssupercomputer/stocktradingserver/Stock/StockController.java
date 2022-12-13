@@ -28,7 +28,7 @@ public class StockController {
      */
     @GetMapping
     public List<Stock> getStocks() {
-        return service.getStockList();
+        return service.getStocks();
     }
 
     /**
