@@ -23,7 +23,9 @@ public class StockService {
      * Returns a list of all stocks in the memory store
      * @return
      */
-    public List<Stock> getStockList() { return stockList; }
+    public Stock[] getStocks() {
+        return stockList.toArray(new Stock[0]);
+    }
 
     /**
      * Adds a stock to the in-memory cache of stocks
