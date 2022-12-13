@@ -24,7 +24,7 @@ public class Stock {
     /**
      * The price of the stock
      */
-    private BigDecimal price;
+    private double price;
     /**
      * The total volume of the stock
      */
@@ -49,7 +49,7 @@ public class Stock {
      * @param price       The price of the stock, leave at 5 for default
      * @param totalVolume The total available volume
      */
-    public Stock(String name, String ticker, BigDecimal price, int totalVolume) {
+    public Stock(String name, String ticker, double price, int totalVolume) {
         this.name = name;
         this.ticker = ticker;
         this.price = price;
@@ -67,7 +67,7 @@ public class Stock {
      * @param totalVolume The total available volume
      * @param dividend    The dividend earned per month
      */
-    public Stock(String name, String ticker, BigDecimal price, int totalVolume, double dividend) {
+    public Stock(String name, String ticker, double price, int totalVolume, double dividend) {
         this(name, ticker, price, totalVolume);
         this.dividend = dividend;
     }
@@ -81,7 +81,7 @@ public class Stock {
      * @param totalVolume The total available volume
      * @param service     The service that should store this stock
      */
-    public Stock(String name, String ticker, BigDecimal price, int totalVolume, StockService service) {
+    public Stock(String name, String ticker, double price, int totalVolume, StockService service) {
         this(name, ticker, price, totalVolume);
         service.saveStock(this);
     }
@@ -103,7 +103,7 @@ public class Stock {
     /**
      * @return The price of the stock
      */
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
