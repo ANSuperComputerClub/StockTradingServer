@@ -1,5 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
@@ -41,7 +42,7 @@ public class MarketService {
     }
 
     /** Creates a new market */
-    public boolean createMarket(int traders, int stockNumber, int period) {
+    public boolean createMarket(int traders, int stockNumber, int period) throws DuplicateTickerException {
         try {
             // Terminate the old market's thread
             if (market != null) {

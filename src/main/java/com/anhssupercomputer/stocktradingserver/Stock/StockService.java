@@ -1,9 +1,11 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 import org.springframework.stereotype.Component;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -31,14 +33,18 @@ public class StockService {
      * Adds a stock to the in-memory cache of stocks
      * @param stock
      */
-    private void addStockInMemory(Stock stock) {
+    private void addStockInMemory(Stock stock) throws DuplicateTickerException {
+        if(stockList.contains(stock.getTicker())) {
+            throw new DuplicateTickerException();
+        }
+
         stockList.add(stock);
     }
 
     /**
      * Save stock to storage
      */
-    public void saveStock(Stock stock) {
+    public void saveStock(Stock stock) throws DuplicateTickerException {
         // TODO: Determine when this should be added to memory vs the database
         // Right now it just adds it to memory
         addStockInMemory(stock);
@@ -55,5 +61,31 @@ public class StockService {
 
     public void clearStocks() {
         stockList.clear();
+    }
+
+    /**
+     * Generates random capitalized characters and checks to see if they are in use
+     */
+    public String generateUnusedTicker() {
+        String ticker;
+
+        do {
+            int numOne = (int) (Math.random() * 26) + 65;
+            int numTwo = (int) (Math.random() * 26) + 65;
+            int numThree = (int) (Math.random() * 26) + 65;
+            int numFour = (int) (Math.random() * 26) + 65;
+
+            // Convert to chars
+            char charOne = (char) numOne;
+            char charTwo = (char) numTwo;
+            char charThree = (char) numThree;
+            char charFour = (char) numFour;
+
+            char[] chars = {charOne, charTwo, charThree, charFour};
+            ticker = new String(chars);
+
+        } while(stockList.contains(ticker));
+
+        return ticker;
     }
 }

@@ -59,6 +59,10 @@ public class Trader {
         }
     }
 
+    protected static void resetIdCount() {
+        nextId = 0;
+    }
+
     /**
      * Gets a default trader with id -1
      * @return

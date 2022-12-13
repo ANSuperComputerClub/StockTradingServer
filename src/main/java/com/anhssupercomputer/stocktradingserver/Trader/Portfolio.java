@@ -77,10 +77,10 @@ public class Portfolio {
     /**
      * @return the total value of the portfolio
      */
-    public BigDecimal getTotalBalance() {
-        BigDecimal total = new BigDecimal("0");
+    public double getTotalBalance() {
+        double total = 0;
         for (var entry : stocks.entrySet()) {
-            total = total.add(entry.getKey().getPrice().multiply(new BigDecimal(entry.getValue())));
+            total += entry.getKey().getPrice() * entry.getValue();
         }
         return total;
     }

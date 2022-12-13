@@ -13,7 +13,7 @@ public class OrderTests {
     private final Order testOrder;
 
     public OrderTests() {
-        this.testStock = new Stock("Test stock", "TEST", BigDecimal.ONE, 1000000);
+        this.testStock = new Stock("Test stock", "TEST", 1, 1000000);
         this.testOrder = new Order(testStock, OrderType.BUY, 2);
     }
     @Test

@@ -1,6 +1,8 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +83,7 @@ public class Stock {
      * @param totalVolume The total available volume
      * @param service     The service that should store this stock
      */
-    public Stock(String name, String ticker, double price, int totalVolume, StockService service) {
+    public Stock(String name, String ticker, double price, int totalVolume, StockService service) throws DuplicateTickerException {
         this(name, ticker, price, totalVolume);
         service.saveStock(this);
     }

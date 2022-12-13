@@ -51,6 +51,7 @@ public class TraderService {
 
     public void clearTraders() {
         traderList.clear();
+        Trader.resetIdCount();
     }
 
     public int getTraderNumber() {

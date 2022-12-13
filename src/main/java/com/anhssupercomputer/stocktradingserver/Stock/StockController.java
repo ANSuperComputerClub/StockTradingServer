@@ -1,5 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class StockController {
      * @return a message if the creation was successful, an error otherwise
      */
     @PostMapping
-    public String createStock(@RequestBody String name, @RequestBody String ticker, @RequestBody double price, @RequestBody int totalVolume) {
+    public String createStock(@RequestBody String name, @RequestBody String ticker, @RequestBody double price, @RequestBody int totalVolume) throws DuplicateTickerException {
         Stock stock = new Stock(name, ticker, price, totalVolume, service);
         return "Successfully added Stock: \n" + stock.toString();
     }

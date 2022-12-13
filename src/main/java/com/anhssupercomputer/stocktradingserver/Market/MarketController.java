@@ -1,5 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
+import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class MarketController {
      * @return True if market is successfully created
      */
     @PostMapping("create")
-    public boolean createMarket(@RequestBody int traderNumber, @RequestBody int stockNumber, @RequestBody int period) {
+    public boolean createMarket(@RequestBody int traderNumber, @RequestBody int stockNumber, @RequestBody int period) throws DuplicateTickerException {
         return service.createMarket(traderNumber, stockNumber, period);
     }
 
