@@ -77,7 +77,7 @@ public class Trader {
      * @return
      */
     public static Trader makeFakeTrader() {
-        Trader fakeTrader = new Trader("", "");
+        Trader fakeTrader = new Trader("" + nextId, "");
         fakeTrader.isFakeTrader = true;
         return fakeTrader;
     }

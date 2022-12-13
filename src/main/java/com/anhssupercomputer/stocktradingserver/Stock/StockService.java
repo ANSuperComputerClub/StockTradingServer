@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 @Component
 public class StockService {
-    private List<Stock> stockList;
+    private ArrayList<Stock> stockList;
 
     public StockService() {
         // TODO Acutally load this from a Database (we have to add databse stuff before then)
@@ -49,5 +49,9 @@ public class StockService {
             }
         }
         throw new NotFoundException();
+    }
+
+    public void clearStocks() {
+        stockList.clear();
     }
 }

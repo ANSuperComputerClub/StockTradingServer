@@ -1,6 +1,8 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
+import com.anhssupercomputer.stocktradingserver.Stock.Stock;
+import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,9 +11,11 @@ import org.springframework.stereotype.Component;
 public class MarketService {
     private Market market;
     private TraderService traderService;
+    private StockService stockService;
 
-    public MarketService(@Autowired TraderService traderService) {
+    public MarketService(@Autowired TraderService traderService, @Autowired StockService stockService) {
         this.traderService = traderService;
+        this.stockService = stockService;
     }
 
     /**
@@ -37,14 +41,14 @@ public class MarketService {
     }
 
     /** Creates a new market */
-    public boolean createMarket(int traders, int period) {
+    public boolean createMarket(int traders, int stockNumber, int period) {
         try {
             // Terminate the old market's thread
             if (market != null) {
                 market.terminate();
             }
 
-            market = new Market(traders, period, traderService);
+            market = new Market(traders, stockNumber, period, traderService, stockService);
             return true;
         } catch(Exception e) {
             // Returns false if a failure occurs.

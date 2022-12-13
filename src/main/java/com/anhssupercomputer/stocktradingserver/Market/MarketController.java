@@ -34,8 +34,8 @@ public class MarketController {
      * @return True if market is successfully created
      */
     @PostMapping("create")
-    public boolean createMarket(@RequestBody int traderNumber, @RequestBody int period) {
-        return service.createMarket(traderNumber, period);
+    public boolean createMarket(@RequestBody int traderNumber, @RequestBody int stockNumber, @RequestBody int period) {
+        return service.createMarket(traderNumber, stockNumber, period);
     }
 
     @GetMapping("alive")
