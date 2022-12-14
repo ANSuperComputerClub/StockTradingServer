@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class MarketService {
     private Market market;
-    private TraderService traderService;
-    private StockService stockService;
-    private PriceService priceService;
-    private OrderController orderController;
+    private final TraderService traderService;
+    private final StockService stockService;
+    private final PriceService priceService;
+    private final OrderController orderController;
 
     public MarketService(@Autowired TraderService traderService, @Autowired StockService stockService, @Autowired PriceService priceService, @Autowired OrderController orderController) {
         this.traderService = traderService;

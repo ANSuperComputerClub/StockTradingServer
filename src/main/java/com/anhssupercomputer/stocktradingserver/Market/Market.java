@@ -18,10 +18,10 @@ import java.util.ArrayList;
 public class Market extends AbstractSystem {
 
     private boolean stopped;
-    private TraderService traderService;
-    private StockService stockService;
-    private PriceService priceService;
-    private OrderController orderController;
+    private final TraderService traderService;
+    private final StockService stockService;
+    private final PriceService priceService;
+    private final OrderController orderController;
 
     /**
      * Simulates the stock market
@@ -52,6 +52,7 @@ public class Market extends AbstractSystem {
     }
 
     /**
+     * Starts the market
      * @return true if successful
      */
     protected boolean startMarket() {

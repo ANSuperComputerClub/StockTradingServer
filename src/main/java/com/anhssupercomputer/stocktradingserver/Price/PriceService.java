@@ -9,7 +9,9 @@ import java.util.ArrayList;
 @Component
 public class PriceService {
     /**
-     * @return Calculated demand based on past price and derivative
+     * Calculates the "favorability" of a stock based on a variety of factors
+     * @param stock the stock to calculate it for
+     * @return The favorability
      */
     public double getFavorability(Stock stock) {
         ArrayList<StockPriceEntry> history = stock.getPriceHistory();
@@ -36,6 +38,11 @@ public class PriceService {
         return (riseCount - (history.size() / 2.0)) + derivative;
     }
 
+    /**
+     * The pricing algorithm that we are using at the moment
+     * @param stock the stock to price
+     * @return the price
+     */
     public double getPrice(Stock stock) {
         double favorability = getFavorability(stock);
 
