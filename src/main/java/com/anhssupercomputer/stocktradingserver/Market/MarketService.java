@@ -2,6 +2,8 @@ package com.anhssupercomputer.stocktradingserver.Market;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
+import com.anhssupercomputer.stocktradingserver.Order.OrderController;
+import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
@@ -13,10 +15,14 @@ public class MarketService {
     private Market market;
     private TraderService traderService;
     private StockService stockService;
+    private PriceService priceService;
+    private OrderController orderController;
 
-    public MarketService(@Autowired TraderService traderService, @Autowired StockService stockService) {
+    public MarketService(@Autowired TraderService traderService, @Autowired StockService stockService, @Autowired PriceService priceService, @Autowired OrderController orderController) {
         this.traderService = traderService;
         this.stockService = stockService;
+        this.priceService = priceService;
+        this.orderController = orderController;
     }
 
     /**
@@ -49,7 +55,7 @@ public class MarketService {
                 market.terminate();
             }
 
-            market = new Market(traders, stockNumber, period, traderService, stockService);
+            market = new Market(traders, stockNumber, period, traderService, stockService , priceService, orderController);
             return true;
         } catch(Exception e) {
             // Returns false if a failure occurs.
