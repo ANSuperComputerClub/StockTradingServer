@@ -2,6 +2,7 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class Stock {
      */
     private double dividend;
 
+    private CircularFifoQueue priceHistory;
 
     /**
      * Stock constructor without dividend
@@ -54,10 +56,11 @@ public class Stock {
     public Stock(String name, String ticker, double price, int totalVolume) {
         this.name = name;
         this.ticker = ticker;
-        this.price = price;
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = 0;
+        priceHistory = new CircularFifoQueue(20);
+        setPrice(price);
     }
 
     /**
@@ -128,6 +131,11 @@ public class Stock {
         return dividend;
     }
 
+    public void setPrice(double price) {
+        priceHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
+        this.price = price;
+    }
+
     /**
      * Updates volume of stock available
      */
@@ -135,6 +143,20 @@ public class Stock {
         if (amountToPurchase > availableVolume) return false;
         availableVolume -= amountToPurchase;
         return true;
+    }
+
+    /**
+     * @return ArrayList of the stock prices starting from oldest to newest
+     */
+    public ArrayList<StockPriceEntry> getPriceHistory() {
+        ArrayList<StockPriceEntry> sortedList = new ArrayList<>(20);
+
+        for(Object stockPriceEntry : priceHistory) {
+            sortedList.add((StockPriceEntry) stockPriceEntry);
+        }
+
+        sortedList.sort(new StockPriceEntryTimeComparator());
+        return sortedList;
     }
 
     /**
