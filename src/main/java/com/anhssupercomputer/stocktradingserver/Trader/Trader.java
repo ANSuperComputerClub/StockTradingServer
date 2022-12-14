@@ -76,6 +76,10 @@ public class Trader {
         return defaultTrader;
     }
 
+    public boolean isFakeTrader() {
+        return isFakeTrader;
+    }
+
     /**
      * Factory for making fake traders. This is not a constructor so it does not get confused with a standard trader
      * @return
