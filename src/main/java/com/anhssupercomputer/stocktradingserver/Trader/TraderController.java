@@ -26,8 +26,8 @@ public class TraderController {
     }
 
     @PostMapping
-    public String createTrader(@RequestBody String username, @RequestBody String key) {
-        Trader trader = new Trader(username, key);
+    public String createTrader(@RequestBody String username, @RequestBody String key, @RequestBody double funds) {
+        Trader trader = new Trader(username, key, funds);
         service.addTrader(trader);
         return "";
     }

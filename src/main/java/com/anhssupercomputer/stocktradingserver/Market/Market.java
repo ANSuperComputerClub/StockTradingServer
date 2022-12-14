@@ -59,8 +59,10 @@ public class Market extends AbstractSystem {
             stopped = false;
 
             if (!isAlive()) {
+                setInitialized();
                 start();
             }
+
             return true;
         } catch(Exception e) {
             return false;
@@ -87,7 +89,6 @@ public class Market extends AbstractSystem {
     @Override
     protected void controlLoop() {
         if(!stopped) {
-
             ArrayList<Stock> rankedStocks = stockService.getRankedStocks();
 
             // Run through each trader and have them take their actions
@@ -105,10 +106,9 @@ public class Market extends AbstractSystem {
                         }
                     }
 
-                    // Find stocks that are most favorable and buy them
-                    double funds = trader.getPortfolio().getFunds();
-
                     for(Stock stock : rankedStocks) {
+                        double funds = trader.getPortfolio().getFunds();
+
                         if(stock.getPrice() < funds) {
                             try {
                                 orderController.createOrder(trader.getId(), stock.getTicker(), "BUY", (int) (funds / stock.getPrice()));

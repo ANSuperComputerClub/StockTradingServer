@@ -2,8 +2,10 @@ package com.anhssupercomputer.stocktradingserver.Market;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
+import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
+import com.anhssupercomputer.stocktradingserver.Trader.Trader;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,22 @@ public class MarketTests {
         for(Stock stock : stockService.getStocks()) {
             System.out.println(stock.getTicker() + " " + stock.getPrice() + " " + stock.getTotalVolume());
         }
+    }
+
+    @Test
+    public void viewMarketSimulation() throws DuplicateTickerException, NoMarketException, NotFoundException {
+        marketService.createMarket(5000, 100, 20);
+
+        marketService.startMarket();
+
+        Trader tracked = traderService.getTraderById(0);
+
+
+        while(true) {
+            System.out.println(tracked.getPortfolio().getStocks().keySet());
+        }
+
+
     }
 
     public MarketTests(@Autowired MarketService marketService, @Autowired TraderService traderService, @Autowired StockService stockService) {

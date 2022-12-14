@@ -35,3 +35,17 @@ out/
 
 ### VS Code ###
 .vscode/
+java_pid8524.hprof.ei3tw2.b.ij/shallow.index
+java_pid8524.hprof.ei3tw2.b.ij/retained.index
+java_pid8524.hprof.ei3tw2.b.ij/remap.index
+java_pid8524.hprof.ei3tw2.b.ij/offsets.index
+java_pid8524.hprof.ei3tw2.b.ij/graph.reverse.head
+java_pid8524.hprof.ei3tw2.b.ij/graph.reverse.body
+java_pid8524.hprof.ei3tw2.b.ij/graph.outbounds
+java_pid8524.hprof.ei3tw2.b.ij/graph.inbounds
+java_pid8524.hprof.ei3tw2.b.ij/graph.direct.head
+java_pid8524.hprof.ei3tw2.b.ij/graph.direct.body
+java_pid8524.hprof.ei3tw2.b.ij/dom.index
+java_pid8524.hprof.ei3tw2.b.ij/count.index
+java_pid8524.hprof.ei3tw2.b.ij/classes.index
+*.hprof

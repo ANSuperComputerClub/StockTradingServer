@@ -53,7 +53,6 @@ public class OrderController {
 
         // TODO: Save it to user
         trader.getPortfolio().addTransaction(order);
-        trader.getPortfolio().changeFunds(-(stock.getPrice() * quantity));
 
         // TODO: Finish implementing this function
         // Blockers: User storage (so we can add it to the user portfolio)
