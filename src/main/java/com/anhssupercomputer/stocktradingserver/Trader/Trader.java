@@ -20,10 +20,11 @@ public class Trader {
 
     private Portfolio portfolio;
 
-    public Trader(String username, String key) {
+    public Trader(String username, String key, double startingFunds) {
         id = makeId();
         this.username = username;
         this.key = key;
+        portfolio = new Portfolio(startingFunds);
         isFakeTrader = false;
     }
 
@@ -69,7 +70,7 @@ public class Trader {
      */
     public static Trader getDefault() {
         if(defaultTrader == null) {
-            defaultTrader = new Trader("Default", "");
+            defaultTrader = new Trader("Default", "", 10000);
             defaultTrader.id = -1;
         }
 
@@ -85,7 +86,7 @@ public class Trader {
      * @return
      */
     public static Trader makeFakeTrader() {
-        Trader fakeTrader = new Trader("" + nextId, "");
+        Trader fakeTrader = new Trader("" + nextId, "", 10000);
         fakeTrader.isFakeTrader = true;
         return fakeTrader;
     }

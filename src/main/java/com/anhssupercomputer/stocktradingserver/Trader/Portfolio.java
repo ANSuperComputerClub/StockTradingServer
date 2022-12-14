@@ -19,11 +19,25 @@ public class Portfolio {
     // Represents the Stock and the Amount of stocks this trader owns
     private final Map<Stock, Integer> stocks;
     private final List<Order> transactionHistory;
+    private double funds;
 
-    public Portfolio() {
+    public Portfolio(double startingFunds) {
         this.stocks = new HashMap<>();
         this.transactionHistory = new ArrayList<>();
+        funds = startingFunds;
     }
+
+    public double getFunds() {
+        return funds;
+    }
+
+    /**
+     * @param change Change in funds will be added to the total funds.
+     */
+    public void changeFunds(double change) {
+        funds += change;
+    }
+
 
     public Map<Stock, Integer> getStocks() {
         return stocks;
