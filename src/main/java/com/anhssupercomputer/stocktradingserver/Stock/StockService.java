@@ -99,4 +99,8 @@ public class StockService {
         sortedStocklist.sort(new StockFavorabilityComparator(priceService));
         return sortedStocklist;
     }
+
+    public void updateStockPrice(Stock stock) {
+        stock.setPrice(priceService.getPrice(stock));
+    }
 }

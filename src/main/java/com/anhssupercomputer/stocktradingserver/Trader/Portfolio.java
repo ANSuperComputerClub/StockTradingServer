@@ -3,6 +3,7 @@ package com.anhssupercomputer.stocktradingserver.Trader;
 import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import com.anhssupercomputer.stocktradingserver.Order.Order;
 import com.anhssupercomputer.stocktradingserver.Order.OrderType;
+import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 
 import java.math.BigDecimal;
@@ -24,11 +25,14 @@ public class Portfolio {
 
     private ReentrantReadWriteLock stockLock;
 
-    public Portfolio(double startingFunds) {
+    private PriceService priceService;
+
+    public Portfolio(double startingFunds, PriceService priceService) {
         this.stocks = new HashMap<>();
         this.transactionHistory = new ArrayList<>();
         funds = startingFunds;
         stockLock = new ReentrantReadWriteLock();
+        this.priceService = priceService;
     }
 
     public double getFunds() {
@@ -77,6 +81,7 @@ public class Portfolio {
                 stocks.computeIfAbsent(stock, (key) -> order.getQuantity());
                 changeFunds(-(stock.getPrice() * order.getQuantity()));
                 stock.updateAvailableVolume(order.getQuantity());
+                stock.setPrice(priceService.getPrice(stock));
                 return;
             }
 
@@ -103,6 +108,7 @@ public class Portfolio {
 
             changeFunds((stock.getPrice() * order.getQuantity()));
             stock.updateAvailableVolume(-order.getQuantity());
+            stock.setPrice(priceService.getPrice(stock));
         } finally {
             stockLock.writeLock().unlock();
         }

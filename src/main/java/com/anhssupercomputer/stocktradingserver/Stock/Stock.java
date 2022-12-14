@@ -2,6 +2,7 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import java.math.BigDecimal;

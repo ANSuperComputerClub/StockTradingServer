@@ -25,13 +25,29 @@ public class PriceService {
 
         // number of times in the past 20 price histories that the stock increased from one price to the next
         int riseCount = 0;
+
         for(int i = 0; i < history.size() - 1; i++) {
-            if(history.get(i).getPrice() > history.get(i + 1).getPrice()) {
+            if(history.get(i).getPrice() >= history.get(i + 1).getPrice()) {
                 riseCount++;
             }
         }
 
         // adds the derivative and risecount, adjusted to make half of price changes positive be the midpoint, to get a favorability
         return (riseCount - (history.size() / 2.0)) + derivative;
+    }
+
+    public double getPrice(Stock stock) {
+        double favorability = getFavorability(stock);
+
+        // 0 means all stock is bought, 1 means all stock is bought
+        double supply = 1.0 - (stock.getAvailableVolume() / stock.getTotalVolume());
+
+        double price = favorability + supply * 30.0;
+
+        if(price < 1) {
+            price = 1;
+        }
+
+        return price;
     }
 }

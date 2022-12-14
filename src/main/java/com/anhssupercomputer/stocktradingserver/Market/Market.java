@@ -41,7 +41,7 @@ public class Market extends AbstractSystem {
 
 
         for(int i = 0; i < traderNumber; i++) {
-            traderService.addTrader(Trader.makeFakeTrader());
+            traderService.addTrader(new Trader("", "", 10000, priceService, true));
         }
 
         for(int i = 0; i < stockNumber; i++) {
@@ -111,7 +111,14 @@ public class Market extends AbstractSystem {
 
                         if(stock.getPrice() < funds) {
                             try {
-                                orderController.createOrder(trader.getId(), stock.getTicker(), "BUY", (int) (funds / stock.getPrice()));
+                                int quantity = (int) (funds / stock.getPrice());
+
+                                // Makes sure it doesn't buy more that it is allowed
+                                if(quantity > stock.getAvailableVolume()) {
+                                    quantity = stock.getAvailableVolume();
+                                }
+
+                                orderController.createOrder(trader.getId(), stock.getTicker(), "BUY", quantity);
                             } catch (NotFoundException|IllegalTransactionException e) {
                                 System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
                             }

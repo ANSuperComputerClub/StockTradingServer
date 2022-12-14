@@ -1,6 +1,7 @@
 package com.anhssupercomputer.stocktradingserver.Trader;
 
 import com.anhssupercomputer.stocktradingserver.Order.Order;
+import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public class Trader {
 
     private Portfolio portfolio;
 
-    public Trader(String username, String key, double startingFunds) {
+    public Trader(String username, String key, double startingFunds, PriceService priceService, boolean isFakeTrader) {
         id = makeId();
         this.username = username;
         this.key = key;
-        portfolio = new Portfolio(startingFunds);
-        isFakeTrader = false;
+        portfolio = new Portfolio(startingFunds, priceService);
+        this.isFakeTrader = isFakeTrader;
     }
 
     public int getId() {
@@ -64,30 +65,7 @@ public class Trader {
         nextId = 0;
     }
 
-    /**
-     * Gets a default trader with id -1
-     * @return
-     */
-    public static Trader getDefault() {
-        if(defaultTrader == null) {
-            defaultTrader = new Trader("Default", "", 10000);
-            defaultTrader.id = -1;
-        }
-
-        return defaultTrader;
-    }
-
     public boolean isFakeTrader() {
         return isFakeTrader;
-    }
-
-    /**
-     * Factory for making fake traders. This is not a constructor so it does not get confused with a standard trader
-     * @return
-     */
-    public static Trader makeFakeTrader() {
-        Trader fakeTrader = new Trader("" + nextId, "", 10000);
-        fakeTrader.isFakeTrader = true;
-        return fakeTrader;
     }
 }
