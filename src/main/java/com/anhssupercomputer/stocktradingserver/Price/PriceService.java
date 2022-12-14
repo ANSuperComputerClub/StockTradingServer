@@ -26,7 +26,7 @@ public class PriceService {
         // number of times in the past 20 price histories that the stock increased from one price to the next
         int riseCount = 0;
         for(int i = 0; i < history.size() - 1; i++) {
-            if(history.get(i).getPrice() > history.get(i + 1).getPrice() {
+            if(history.get(i).getPrice() > history.get(i + 1).getPrice()) {
                 riseCount++;
             }
         }
