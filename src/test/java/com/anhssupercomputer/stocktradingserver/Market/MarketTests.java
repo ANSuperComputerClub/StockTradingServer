@@ -53,7 +53,7 @@ public class MarketTests {
 
         Stock stock = stockService.getStocks().get(0);
         while(true) {
-            System.out.println(stock.getTicker() + " " + stock.getPrice() + " " + stock.getAvailableVolume() + " " + priceService.getFavorability(stock));
+            System.out.println(tracked.getPortfolio().getProfit());
         }
 
 

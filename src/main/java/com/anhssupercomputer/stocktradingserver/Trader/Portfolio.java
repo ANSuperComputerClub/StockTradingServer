@@ -39,6 +39,15 @@ public class Portfolio {
         return funds;
     }
 
+    public double getProfit() {
+        double totalPrice = 0;
+        for(Stock stock : stocks.keySet()) {
+            totalPrice = stock.getPrice() * stocks.get(stock);
+        }
+
+        return totalPrice;
+    }
+
     /**
      * @param change Change in funds will be added to the total funds.
      */
