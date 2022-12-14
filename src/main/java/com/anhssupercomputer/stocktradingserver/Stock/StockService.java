@@ -2,6 +2,8 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
+import com.anhssupercomputer.stocktradingserver.Price.PriceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -14,11 +16,14 @@ import java.util.ArrayList;
  */
 @Component
 public class StockService {
+    private PriceService priceService;
+
     private ArrayList<Stock> stockList;
 
-    public StockService() {
+    public StockService(@Autowired PriceService priceService) {
         // TODO Acutally load this from a Database (we have to add databse stuff before then)
         stockList = new ArrayList<>();
+        this.priceService = priceService;
     }
 
     /**
@@ -87,5 +92,11 @@ public class StockService {
         } while(stockList.contains(ticker));
 
         return ticker;
+    }
+
+    public ArrayList<Stock> getRankedStocks() {
+        ArrayList<Stock> sortedStocklist = (ArrayList<Stock>) stockList.clone();
+        sortedStocklist.sort(new StockFavorabilityComparator(priceService));
+        return sortedStocklist;
     }
 }
