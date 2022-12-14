@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The portfolio of an individual trader.
  */
 public class Portfolio {
+    // Represents the Stock and the Amount of stocks this trader owns
     private final Map<Stock, Integer> stocks;
     private final List<Order> transactionHistory;
 
