@@ -45,15 +45,19 @@ public class MarketTests {
 
     @Test
     public void viewMarketSimulation() throws DuplicateTickerException, NoMarketException, NotFoundException {
-        marketService.createMarket(5000, 100, 1000);
+        marketService.createMarket(200, 10, 1000);
 
         marketService.startMarket();
 
         Trader tracked = traderService.getTraderById(0);
 
         Stock stock = stockService.getStocks().get(0);
+        long last = 0;
         while(true) {
-            System.out.println(tracked.getPortfolio().getProfit());
+            if(System.currentTimeMillis() - last > 1) {
+                System.out.println(stock.getTicker() + " " + stock.getPrice() + " " + stock.getAvailableVolume());
+                last = System.currentTimeMillis();
+            }
         }
 
 
