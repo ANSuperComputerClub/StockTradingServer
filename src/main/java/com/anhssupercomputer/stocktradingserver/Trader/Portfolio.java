@@ -23,9 +23,9 @@ public class Portfolio {
     private final List<Order> transactionHistory;
     private double funds;
 
-    private ReentrantReadWriteLock stockLock;
+    private final ReentrantReadWriteLock stockLock;
 
-    private PriceService priceService;
+    private final PriceService priceService;
 
     public Portfolio(double startingFunds, PriceService priceService) {
         this.stocks = new HashMap<>();

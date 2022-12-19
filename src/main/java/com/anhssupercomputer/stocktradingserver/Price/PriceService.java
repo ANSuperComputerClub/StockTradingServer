@@ -47,14 +47,11 @@ public class PriceService {
         double favorability = getFavorability(stock);
 
         // 0 means all stock is bought, 1 means all stock is bought
-        double supply = 1.0 - (stock.getAvailableVolume() / stock.getTotalVolume());
+        // We have to multiply by 1.0 here to force regular division
+        double supply = 1.0 - 1.0 * stock.getAvailableVolume() / stock.getTotalVolume();
 
         double price = favorability + supply * 30.0;
-
-        if(price < 1) {
-            price = 1;
-        }
-
+        if(price < 1) price = 1;
         return price;
     }
 }

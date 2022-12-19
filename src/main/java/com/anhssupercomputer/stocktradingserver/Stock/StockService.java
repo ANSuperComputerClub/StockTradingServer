@@ -3,6 +3,7 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
+import com.anhssupercomputer.stocktradingserver.Utility.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -73,23 +74,17 @@ public class StockService {
      */
     public String generateUnusedTicker() {
         String ticker;
-
         do {
-            int numOne = (int) (Math.random() * 26) + 65;
-            int numTwo = (int) (Math.random() * 26) + 65;
-            int numThree = (int) (Math.random() * 26) + 65;
-            int numFour = (int) (Math.random() * 26) + 65;
-
             // Convert to chars
-            char charOne = (char) numOne;
-            char charTwo = (char) numTwo;
-            char charThree = (char) numThree;
-            char charFour = (char) numFour;
+            char charOne = Util.generateRandomCharacter();
+            char charTwo = Util.generateRandomCharacter();
+            char charThree = Util.generateRandomCharacter();
+            char charFour =  Util.generateRandomCharacter();
 
             char[] chars = {charOne, charTwo, charThree, charFour};
             ticker = new String(chars);
 
-        } while(stockList.contains(ticker));
+        } while(stockList.stream().anyMatch(stock -> stock.getTicker().equals(ticker)));
 
         return ticker;
     }
