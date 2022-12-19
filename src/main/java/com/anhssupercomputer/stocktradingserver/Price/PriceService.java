@@ -35,7 +35,7 @@ public class PriceService {
         }
 
         // adds the derivative and risecount, adjusted to make half of price changes positive be the midpoint, to get a favorability
-        return (riseCount - (history.size() / 2.0)) + derivative;
+        return (riseCount - (history.size() / 2.0)) + (derivative / stock.getPrice());
     }
 
     /**

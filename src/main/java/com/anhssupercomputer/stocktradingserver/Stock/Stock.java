@@ -147,7 +147,7 @@ public class Stock {
     }
 
     /**
-     * @return ArrayList of the stock prices starting from oldest to newest
+     * @return ArrayList of the stock prices starting from newest to oldest
      */
     public ArrayList<StockPriceEntry> getPriceHistory() {
         ArrayList<StockPriceEntry> sortedList = new ArrayList<>(20);

@@ -47,7 +47,7 @@ public class Market extends AbstractSystem {
         for(int i = 0; i < stockNumber; i++) {
 
             String ticker = stockService.generateUnusedTicker();
-            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 100d, (int) (Math.random() * 100000d)));
+            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 100d, (int) (Math.random() * 10000d)));
         }
     }
 
@@ -90,7 +90,6 @@ public class Market extends AbstractSystem {
     @Override
     protected void controlLoop() {
         if(!stopped) {
-            ArrayList<Stock> rankedStocks = stockService.getRankedStocks();
 
             // Run through each trader and have them take their actions
             for(Trader trader : traderService.getAllTraders()) {
@@ -106,6 +105,8 @@ public class Market extends AbstractSystem {
                             }
                         }
                     }
+
+                    ArrayList<Stock> rankedStocks = stockService.getRankedStocks();
 
                     for(Stock stock : rankedStocks) {
                         double funds = trader.getPortfolio().getFunds();
