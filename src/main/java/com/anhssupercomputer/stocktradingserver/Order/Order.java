@@ -12,19 +12,19 @@ public class Order {
     /**
      * The stock that was bought in the order
      */
-    private Stock stock;
+    private final Stock stock;
     /**
      * The type of order it is
      */
-    private OrderType type;
+    private final OrderType type;
     /**
      * How much of that stock was bought
      */
-    private int quantity;
+    private final  int quantity;
     /**
      * The date that the transaction happened
      */
-    private Date date;
+    private final Date date;
     public Order(Stock stock, OrderType type, int quantity) {
         this.stock = stock;
         this.type = type;

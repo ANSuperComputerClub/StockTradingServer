@@ -5,8 +5,8 @@ package com.anhssupercomputer.stocktradingserver.Stock;
  */
 public class StockPriceEntry {
 
-    private double price;
-    private double timeMS;
+    private final double price;
+    private final double timeMS;
 
     protected StockPriceEntry(double price, double timeMS) {
         this.price = price;

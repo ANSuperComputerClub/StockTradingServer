@@ -19,11 +19,11 @@ public class Stock {
     /**
      * The name of the stock
      */
-    private String name;
+    private final String name;
     /**
      * The ticker for the stock
      */
-    private String ticker;
+    private final String ticker;
 
     /**
      * The price of the stock
@@ -32,7 +32,7 @@ public class Stock {
     /**
      * The total volume of the stock
      */
-    private int totalVolume;
+    private final int totalVolume;
 
     /**
      * The available volume of stock to be bought

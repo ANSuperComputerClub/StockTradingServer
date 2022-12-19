@@ -13,14 +13,13 @@ public class StockController {
     /**
      * The stock service that handles the database, caching, and management of Stocks
      */
-    @Autowired
-    private StockService service;
+    private final StockService service;
 
     /**
      * Initialize the Stock Controller
      * @param service the StockService to use
      */
-    public StockController(StockService service) {
+    public StockController(@Autowired StockService service) {
         this.service = service;
     }
 
