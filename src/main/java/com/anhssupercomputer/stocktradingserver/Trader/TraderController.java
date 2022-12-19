@@ -19,6 +19,7 @@ public class TraderController {
 
     /**
      * Finds a trader with the specififed id
+     *
      * @param id the id of the trader
      * @return the Trader, if it is found
      * @throws NotFoundException If the trader is not found

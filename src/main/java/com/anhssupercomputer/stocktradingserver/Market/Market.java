@@ -10,23 +10,22 @@ import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 import com.anhssupercomputer.stocktradingserver.Trader.Trader;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import com.anhssupercomputer.stocktradingserver.Utility.AbstractSystem;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 public class Market extends AbstractSystem {
 
-    private boolean stopped;
     private final TraderService traderService;
     private final StockService stockService;
     private final PriceService priceService;
     private final OrderController orderController;
+    private boolean stopped;
 
     /**
      * Simulates the stock market
+     *
      * @param traderNumber number of trader
-     * @param period period in ms that the simulation runs at
+     * @param period       period in ms that the simulation runs at
      */
     protected Market(int traderNumber, int stockNumber, int period, TraderService traderService, StockService stockService, PriceService priceService, OrderController orderController) throws DuplicateTickerException {
         super(period);
@@ -40,11 +39,11 @@ public class Market extends AbstractSystem {
         stockService.clearStocks();
 
 
-        for(int i = 0; i < traderNumber; i++) {
+        for (int i = 0; i < traderNumber; i++) {
             traderService.addTrader(new Trader("", "", 10000, priceService, true));
         }
 
-        for(int i = 0; i < stockNumber; i++) {
+        for (int i = 0; i < stockNumber; i++) {
 
             String ticker = stockService.generateUnusedTicker();
             stockService.saveStock(new Stock(ticker, ticker, Math.random() * 100d, (int) (Math.random() * 10000d)));
@@ -53,6 +52,7 @@ public class Market extends AbstractSystem {
 
     /**
      * Starts the market
+     *
      * @return true if successful
      */
     protected boolean startMarket() {
@@ -65,7 +65,7 @@ public class Market extends AbstractSystem {
             }
 
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -78,7 +78,7 @@ public class Market extends AbstractSystem {
         try {
             stopped = true;
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -89,18 +89,18 @@ public class Market extends AbstractSystem {
 
     @Override
     protected void controlLoop() {
-        if(!stopped) {
+        if (!stopped) {
 
             // Run through each trader and have them take their actions
-            for(Trader trader : traderService.getAllTraders()) {
-                if(trader.isFakeTrader()) {
+            for (Trader trader : traderService.getAllTraders()) {
+                if (trader.isFakeTrader()) {
 
                     // Find and sell stocks that have low favorability
-                    for(Stock stock: trader.getPortfolio().getStocks().keySet()) {
-                        if(priceService.getFavorability(stock) < 0) {
+                    for (Stock stock : trader.getPortfolio().getStocks().keySet()) {
+                        if (priceService.getFavorability(stock) < 0) {
                             try {
                                 orderController.createOrder(trader.getId(), stock.getTicker(), "SELL", trader.getPortfolio().getStocks().get(stock));
-                            } catch (NotFoundException|IllegalTransactionException e) {
+                            } catch (NotFoundException | IllegalTransactionException e) {
                                 System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
                             }
                         }
@@ -108,20 +108,20 @@ public class Market extends AbstractSystem {
 
                     ArrayList<Stock> rankedStocks = stockService.getRankedStocks();
 
-                    for(Stock stock : rankedStocks) {
+                    for (Stock stock : rankedStocks) {
                         double funds = trader.getPortfolio().getFunds();
 
-                        if(stock.getPrice() < funds) {
+                        if (stock.getPrice() < funds) {
                             try {
                                 int quantity = (int) (funds / stock.getPrice());
 
                                 // Makes sure it doesn't buy more that it is allowed
-                                if(quantity > stock.getAvailableVolume()) {
+                                if (quantity > stock.getAvailableVolume()) {
                                     quantity = stock.getAvailableVolume();
                                 }
 
                                 orderController.createOrder(trader.getId(), stock.getTicker(), "BUY", quantity);
-                            } catch (NotFoundException|IllegalTransactionException e) {
+                            } catch (NotFoundException | IllegalTransactionException e) {
                                 System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
                             }
                         }

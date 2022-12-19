@@ -2,12 +2,9 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
-import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A representation of a Stock object, to be exchanged on the server by way of Orders.
@@ -24,27 +21,23 @@ public class Stock {
      * The ticker for the stock
      */
     private final String ticker;
-
+    /**
+     * The total volume of the stock
+     */
+    private final int totalVolume;
+    private final CircularFifoQueue priceHistory;
     /**
      * The price of the stock
      */
     private double price;
     /**
-     * The total volume of the stock
-     */
-    private final int totalVolume;
-
-    /**
      * The available volume of stock to be bought
      */
     private int availableVolume;
-
     /**
      * The ratio of profit to dividend, paid monthly
      */
     private double dividend;
-
-    private CircularFifoQueue priceHistory;
 
     /**
      * Stock constructor without dividend
@@ -113,6 +106,11 @@ public class Stock {
         return price;
     }
 
+    public void setPrice(double price) {
+        priceHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
+        this.price = price;
+    }
+
     /**
      * @return The total volume of stock
      */
@@ -127,14 +125,8 @@ public class Stock {
         return availableVolume;
     }
 
-
     public double getDividend() {
         return dividend;
-    }
-
-    public void setPrice(double price) {
-        priceHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
-        this.price = price;
     }
 
     /**
@@ -152,7 +144,7 @@ public class Stock {
     public ArrayList<StockPriceEntry> getPriceHistory() {
         ArrayList<StockPriceEntry> sortedList = new ArrayList<>(20);
 
-        for(Object stockPriceEntry : priceHistory) {
+        for (Object stockPriceEntry : priceHistory) {
             sortedList.add((StockPriceEntry) stockPriceEntry);
         }
 

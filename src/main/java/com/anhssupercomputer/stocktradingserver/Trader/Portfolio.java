@@ -6,7 +6,6 @@ import com.anhssupercomputer.stocktradingserver.Order.OrderType;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +20,9 @@ public class Portfolio {
     // Represents the Stock and the Amount of stocks this trader owns
     private final Map<Stock, Integer> stocks;
     private final List<Order> transactionHistory;
-    private double funds;
-
     private final ReentrantReadWriteLock stockLock;
-
     private final PriceService priceService;
+    private double funds;
 
     public Portfolio(double startingFunds, PriceService priceService) {
         this.stocks = new HashMap<>();
@@ -41,7 +38,7 @@ public class Portfolio {
 
     public double getProfit() {
         double totalPrice = 0;
-        for(Stock stock : stocks.keySet()) {
+        for (Stock stock : stocks.keySet()) {
             totalPrice = stock.getPrice() * stocks.get(stock);
         }
 
@@ -71,6 +68,7 @@ public class Portfolio {
 
     /**
      * Adds a transaction to the portfolio, then processes it
+     *
      * @param order the order to process and store
      */
     public void addTransaction(Order order) throws IllegalTransactionException {

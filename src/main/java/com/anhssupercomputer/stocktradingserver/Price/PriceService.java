@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class PriceService {
     /**
      * Calculates the "favorability" of a stock based on a variety of factors
+     *
      * @param stock the stock to calculate it for
      * @return The favorability
      */
@@ -18,7 +19,7 @@ public class PriceService {
         double derivative = 0;
 
         // Calculate derivative
-        if(history.size() >= 2) {
+        if (history.size() >= 2) {
             StockPriceEntry entry1 = history.get(0);
             StockPriceEntry entry2 = history.get(1);
 
@@ -28,8 +29,8 @@ public class PriceService {
         // number of times in the past 20 price histories that the stock increased from one price to the next
         int riseCount = 0;
 
-        for(int i = 0; i < history.size() - 1; i++) {
-            if(history.get(i).getPrice() >= history.get(i + 1).getPrice()) {
+        for (int i = 0; i < history.size() - 1; i++) {
+            if (history.get(i).getPrice() >= history.get(i + 1).getPrice()) {
                 riseCount++;
             }
         }
@@ -40,6 +41,7 @@ public class PriceService {
 
     /**
      * The pricing algorithm that we are using at the moment
+     *
      * @param stock the stock to price
      * @return the price
      */
@@ -51,7 +53,7 @@ public class PriceService {
         double supply = 1.0 - 1.0 * stock.getAvailableVolume() / stock.getTotalVolume();
 
         double price = favorability + supply * 30.0;
-        if(price < 1) price = 1;
+        if (price < 1) price = 1;
         return price;
     }
 }

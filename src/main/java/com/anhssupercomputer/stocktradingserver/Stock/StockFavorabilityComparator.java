@@ -1,7 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Comparator;
 

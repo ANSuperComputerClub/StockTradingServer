@@ -20,11 +20,12 @@ public class Order {
     /**
      * How much of that stock was bought
      */
-    private final  int quantity;
+    private final int quantity;
     /**
      * The date that the transaction happened
      */
     private final Date date;
+
     public Order(Stock stock, OrderType type, int quantity) {
         this.stock = stock;
         this.type = type;
@@ -41,7 +42,6 @@ public class Order {
 
     /**
      * @return Whether the stock was bought or sold
-     *
      */
     public OrderType getType() {
         return type;

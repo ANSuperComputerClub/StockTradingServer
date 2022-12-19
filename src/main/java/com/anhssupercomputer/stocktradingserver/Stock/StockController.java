@@ -4,7 +4,6 @@ import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerExcept
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -17,6 +16,7 @@ public class StockController {
 
     /**
      * Initialize the Stock Controller
+     *
      * @param service the StockService to use
      */
     public StockController(@Autowired StockService service) {
@@ -33,15 +33,16 @@ public class StockController {
 
     /**
      * Creates a new stock
-     * @param name the name of the stock
-     * @param ticker the stock's ticker
-     * @param price the stock's price
+     *
+     * @param name        the name of the stock
+     * @param ticker      the stock's ticker
+     * @param price       the stock's price
      * @param totalVolume the total volume of the stock
      * @return a message if the creation was successful, an error otherwise
      */
     @PostMapping
     public String createStock(@RequestBody String name, @RequestBody String ticker, @RequestBody double price, @RequestBody int totalVolume) throws DuplicateTickerException {
         Stock stock = new Stock(name, ticker, price, totalVolume, service);
-        return "Successfully added Stock: \n" + stock.toString();
+        return "Successfully added Stock: \n" + stock;
     }
 }
