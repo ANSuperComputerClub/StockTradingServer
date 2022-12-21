@@ -25,7 +25,7 @@ public class Stock {
      * The total volume of the stock
      */
     private final int totalVolume;
-    private final CircularFifoQueue priceHistory;
+    private final CircularFifoQueue<StockPriceEntry> priceHistory;
     /**
      * The price of the stock
      */
@@ -53,7 +53,7 @@ public class Stock {
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = 0;
-        priceHistory = new CircularFifoQueue(20);
+        priceHistory = new CircularFifoQueue<>(20);
         setPrice(price);
     }
 

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Function;
 
 /**
  * The portfolio of an individual trader.
@@ -21,6 +22,7 @@ public class Portfolio {
     private final Map<Stock, Integer> stocks;
     private final List<Order> transactionHistory;
     private final ReentrantReadWriteLock stockLock;
+    // TODO: Move the functionality of the PriceService somewhere else
     private final PriceService priceService;
     private double funds;
 
@@ -49,9 +51,17 @@ public class Portfolio {
      * @param change Change in funds will be added to the total funds.
      */
     public void changeFunds(double change) {
-        funds += change;
+        //    funds += change;
+        updateFunds(val -> val + change);
     }
 
+    /**
+     * Update the value of funds
+     * @param f the function to run. The return value of this function becomes the value of funds
+     */
+    public void updateFunds(Function<Double, Double> f) {
+        funds = f.apply(funds);
+    }
 
     public Map<Stock, Integer> getStocks() {
         stockLock.readLock().lock();
@@ -93,7 +103,8 @@ public class Portfolio {
             }
 
             // We try to sell stock that we don't own
-            if (!stocks.containsKey(stock)) throw new IllegalTransactionException();
+            if (!stocks.containsKey(stock))
+                throw new IllegalTransactionException();
 
             // TODO Ask matthew for a better way to do this
             AtomicBoolean shouldThrowError = new AtomicBoolean(false);

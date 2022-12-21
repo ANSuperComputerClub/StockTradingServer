@@ -13,10 +13,16 @@ public class StockPriceEntry {
         this.timeMS = timeMS;
     }
 
+    /**
+     * @return The price of a stock
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * @return The time of the price
+     */
     public double getTimeMS() {
         return timeMS;
     }

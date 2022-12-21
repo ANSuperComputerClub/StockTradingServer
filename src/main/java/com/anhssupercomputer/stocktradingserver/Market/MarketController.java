@@ -12,7 +12,7 @@ public class MarketController {
     private final MarketService service;
 
     public MarketController(@Autowired MarketService service) {
-        this.service = service;
+        this.service = service; 
     }
 
     /**
@@ -39,6 +39,9 @@ public class MarketController {
         return service.createMarket(traderNumber, stockNumber, period);
     }
 
+    /**
+     * @return Returns true if the market is alive
+     */
     @GetMapping("alive")
     public boolean isMarketAlive() {
         return service.isMarketAlive();

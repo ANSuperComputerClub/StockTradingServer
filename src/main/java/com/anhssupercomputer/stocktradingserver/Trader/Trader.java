@@ -5,6 +5,8 @@ import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class Trader {
     private static int nextId = 0;
     /**
@@ -17,7 +19,7 @@ public class Trader {
     private final boolean isFakeTrader;
     private final Portfolio portfolio;
 
-    public Trader(String username, String key, double startingFunds, PriceService priceService, boolean isFakeTrader) {
+    public Trader(String username, String key, double startingFunds, @Autowired PriceService priceService, boolean isFakeTrader) {
         id = makeId();
         this.username = username;
         this.key = key;

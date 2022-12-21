@@ -93,6 +93,7 @@ public class Market extends AbstractSystem {
 
             // Run through each trader and have them take their actions
             for (Trader trader : traderService.getAllTraders()) {
+                // If the trader is fake
                 if (trader.isFakeTrader()) {
 
                     // Find and sell stocks that have low favorability

@@ -46,6 +46,8 @@ public class PriceService {
      * @return the price
      */
     public double getPrice(Stock stock) {
+        // TODO: Right now the price is calculated using the favorability
+        // Which makes things circular because the favorability is calculated from the price
         double favorability = getFavorability(stock);
 
         // 0 means all stock is bought, 1 means all stock is bought
