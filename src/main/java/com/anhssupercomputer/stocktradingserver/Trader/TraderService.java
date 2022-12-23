@@ -11,7 +11,7 @@ public class TraderService {
     /**
      * An in-memory cache of traders (decide later if we actually need this)
      */
-    private ArrayList<Trader> traderList;
+    private final ArrayList<Trader> traderList;
 
     public TraderService() {
         // TODO: Actually initialize a database connection
@@ -22,8 +22,8 @@ public class TraderService {
      * @return a list of all traders
      */
     public List<Trader> getAllTraders() {
-       // TODO: Grab the traders from the database, not just those in memory
-       return traderList;
+        // TODO: Grab the traders from the database, not just those in memory
+        return traderList;
     }
 
     /**
@@ -33,8 +33,8 @@ public class TraderService {
      */
     public Trader getTraderById(int id) throws NotFoundException {
         // TODO: Include the database
-        for(Trader trader: traderList) {
-            if(trader.getId() == id) {
+        for (Trader trader : traderList) {
+            if (trader.getId() == id) {
                 return trader;
             }
         }
@@ -43,6 +43,7 @@ public class TraderService {
 
     /**
      * Adds a trader to the trader list
+     *
      * @param trader
      */
     public void addTrader(@NotNull Trader trader) {

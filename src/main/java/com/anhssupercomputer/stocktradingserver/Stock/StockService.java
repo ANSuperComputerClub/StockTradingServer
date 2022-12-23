@@ -3,12 +3,10 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
+import com.anhssupercomputer.stocktradingserver.Utility.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
-import java.util.HashMap;
-import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -16,30 +14,32 @@ import java.util.ArrayList;
  */
 @Component
 public class StockService {
-    private PriceService priceService;
+    private final PriceService priceService;
 
-    private ArrayList<Stock> stockList;
+    private final ArrayList<Stock> stockList;
 
     public StockService(@Autowired PriceService priceService) {
-        // TODO Acutally load this from a Database (we have to add databse stuff before then)
+        // TODO Acutally load this from a Database (we have to add databse stuff before
+        // then)
         stockList = new ArrayList<>();
         this.priceService = priceService;
     }
 
     /**
-     * Returns a list of all stocks in the memory store
-     * @return
+     * @return a list of all stocks in the memory store
      */
     public ArrayList<Stock> getStocks() {
-        return (ArrayList<Stock>) stockList.clone();
+        return new ArrayList<>(stockList);
     }
 
     /**
      * Adds a stock to the in-memory cache of stocks
-     * @param stock
+     *
+     * @param stock the stock to add
      */
     private void addStockInMemory(Stock stock) throws DuplicateTickerException {
-        if(stockList.contains(stock.getTicker())) {
+        // Check if there is a ticker that already exists
+        if (tickerInUse(stock.getTicker())) {
             throw new DuplicateTickerException();
         }
 
@@ -55,13 +55,22 @@ public class StockService {
         addStockInMemory(stock);
     }
 
+    /**
+     * @param ticker The ticker of the stock to find
+     * @return The stock with the matching ticker
+     * @throws NotFoundException if no stock was found
+     */
     public Stock getStockByTicker(String ticker) throws NotFoundException {
-        for(Stock stock: stockList) {
-            if(stock.getTicker().equals(ticker)) {
-                return stock;
-            }
-        }
-        throw new NotFoundException();
+        return stockList.stream().filter(stock -> stock.tickerMatches(ticker)).findFirst()
+                .orElseThrow(NotFoundException::new);
+    }
+
+    /**
+     * @param ticker The ticker to check
+     * @return if the ticker is in use or not
+     */
+    public boolean tickerInUse(String ticker) {
+        return stockList.stream().anyMatch(stock -> stock.tickerMatches(ticker));
     }
 
     public void clearStocks() {
@@ -74,30 +83,21 @@ public class StockService {
     public String generateUnusedTicker() {
         String ticker;
 
-        do {
-            int numOne = (int) (Math.random() * 26) + 'A';
-            int numTwo = (int) (Math.random() * 26) + 'A';
-            int numThree = (int) (Math.random() * 26) + 'A';
-            int numFour = (int) (Math.random() * 26) + 'A';
-
-            // Convert to chars
-            char charOne = (char) numOne;
-            char charTwo = (char) numTwo;
-            char charThree = (char) numThree;
-            char charFour = (char) numFour;
-
-            char[] chars = {charOne, charTwo, charThree, charFour};
-            ticker = new String(chars);
-
-        } while(stockList.contains(ticker));
+        do ticker = new String(new char[] {
+            Util.generateRandomCharacter(),
+            Util.generateRandomCharacter(),
+            Util.generateRandomCharacter(),
+            Util.generateRandomCharacter()
+        });
+        while (tickerInUse(ticker));
 
         return ticker;
     }
 
     public ArrayList<Stock> getRankedStocks() {
-        ArrayList<Stock> sortedStocklist = (ArrayList<Stock>) stockList.clone();
-        sortedStocklist.sort(new StockFavorabilityComparator(priceService));
-        return sortedStocklist;
+        ArrayList<Stock> sortedStockList = new ArrayList<>(stockList);
+        sortedStockList.sort(new StockFavorabilityComparator(priceService));
+        return sortedStockList;
     }
 
     public void updateStockPrice(Stock stock) {

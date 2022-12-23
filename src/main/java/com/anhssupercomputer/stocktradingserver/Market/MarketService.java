@@ -4,7 +4,6 @@ import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerExcept
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
 import com.anhssupercomputer.stocktradingserver.Order.OrderController;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
-import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MarketService {
-    private Market market;
     private final TraderService traderService;
     private final StockService stockService;
     private final PriceService priceService;
     private final OrderController orderController;
+    private Market market;
 
     public MarketService(@Autowired TraderService traderService, @Autowired StockService stockService, @Autowired PriceService priceService, @Autowired OrderController orderController) {
         this.traderService = traderService;
@@ -29,7 +28,7 @@ public class MarketService {
      * @return True if successful
      */
     public boolean startMarket() throws NoMarketException {
-        if(market == null) {
+        if (market == null) {
             throw new NoMarketException();
         }
 
@@ -40,14 +39,16 @@ public class MarketService {
      * @return True if successful
      */
     public boolean stopMarket() throws NoMarketException {
-        if(market == null) {
+        if (market == null) {
             throw new NoMarketException();
         }
 
         return market.stopMarket();
     }
 
-    /** Creates a new market */
+    /**
+     * Creates a new market
+     */
     public boolean createMarket(int traders, int stockNumber, int period) throws DuplicateTickerException {
         try {
             // Terminate the old market's thread
@@ -55,18 +56,15 @@ public class MarketService {
                 market.terminate();
             }
 
-            market = new Market(traders, stockNumber, period, traderService, stockService , priceService, orderController);
+            market = new Market(traders, stockNumber, period, traderService, stockService, priceService, orderController);
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             // Returns false if a failure occurs.
             return false;
         }
     }
 
     public boolean isMarketAlive() {
-        if(market == null || !market.isAlive() || market.isStopped())
-            return false;
-        else
-            return true;
+        return market != null && market.isAlive() && !market.isStopped();
     }
 }

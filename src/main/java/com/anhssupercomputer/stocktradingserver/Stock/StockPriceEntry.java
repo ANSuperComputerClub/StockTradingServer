@@ -5,18 +5,24 @@ package com.anhssupercomputer.stocktradingserver.Stock;
  */
 public class StockPriceEntry {
 
-    private double price;
-    private double timeMS;
+    private final double price;
+    private final double timeMS;
 
     protected StockPriceEntry(double price, double timeMS) {
         this.price = price;
         this.timeMS = timeMS;
     }
 
+    /**
+     * @return The price of a stock
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * @return The time of the price
+     */
     public double getTimeMS() {
         return timeMS;
     }

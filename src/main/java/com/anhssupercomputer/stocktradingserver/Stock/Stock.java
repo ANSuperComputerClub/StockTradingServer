@@ -2,12 +2,9 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
-import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A representation of a Stock object, to be exchanged on the server by way of Orders.
@@ -19,32 +16,28 @@ public class Stock {
     /**
      * The name of the stock
      */
-    private String name;
+    private final String name;
     /**
      * The ticker for the stock
      */
-    private String ticker;
-
+    private final String ticker;
+    /**
+     * The total volume of the stock
+     */
+    private final int totalVolume;
+    private final CircularFifoQueue<StockPriceEntry> priceHistory;
     /**
      * The price of the stock
      */
     private double price;
     /**
-     * The total volume of the stock
-     */
-    private int totalVolume;
-
-    /**
      * The available volume of stock to be bought
      */
     private int availableVolume;
-
     /**
      * The ratio of profit to dividend, paid monthly
      */
     private double dividend;
-
-    private CircularFifoQueue priceHistory;
 
     /**
      * Stock constructor without dividend
@@ -60,7 +53,7 @@ public class Stock {
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = 0;
-        priceHistory = new CircularFifoQueue(20);
+        priceHistory = new CircularFifoQueue<>(20);
         setPrice(price);
     }
 
@@ -113,6 +106,11 @@ public class Stock {
         return price;
     }
 
+    public void setPrice(double price) {
+        priceHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
+        this.price = price;
+    }
+
     /**
      * @return The total volume of stock
      */
@@ -127,14 +125,8 @@ public class Stock {
         return availableVolume;
     }
 
-
     public double getDividend() {
         return dividend;
-    }
-
-    public void setPrice(double price) {
-        priceHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
-        this.price = price;
     }
 
     /**
@@ -152,7 +144,7 @@ public class Stock {
     public ArrayList<StockPriceEntry> getPriceHistory() {
         ArrayList<StockPriceEntry> sortedList = new ArrayList<>(20);
 
-        for(Object stockPriceEntry : priceHistory) {
+        for (Object stockPriceEntry : priceHistory) {
             sortedList.add((StockPriceEntry) stockPriceEntry);
         }
 
@@ -173,5 +165,33 @@ public class Stock {
                 ", availableVolume=" + availableVolume +
                 ", dividend=" + dividend +
                 '}';
+    }
+
+    /**
+     * Equals override
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) return false;
+        if(obj.getClass() != getClass()) return false;
+        // At this point we are guarnateed to have a clean conversion
+        return this.equals((Stock) obj);
+    }
+
+    /**
+     * @param stock the stock to compare it to
+     * @return true if equal, false if not
+     */
+    public boolean equals(Stock stock) {
+        return tickerMatches(stock.ticker);
+    }
+
+    /**
+     * If a particular ticker matches a stock
+     * @param ticker the ticker to check
+     * @return true if match, false if not
+     */
+    public boolean tickerMatches(String ticker) {
+        return this.ticker.equals(ticker);
     }
 }
