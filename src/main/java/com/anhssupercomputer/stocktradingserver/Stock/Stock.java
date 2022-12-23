@@ -166,4 +166,32 @@ public class Stock {
                 ", dividend=" + dividend +
                 '}';
     }
+
+    /**
+     * Equals override
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) return false;
+        if(obj.getClass() != getClass()) return false;
+        // At this point we are guarnateed to have a clean conversion
+        return this.equals((Stock) obj);
+    }
+
+    /**
+     * @param stock the stock to compare it to
+     * @return true if equal, false if not
+     */
+    public boolean equals(Stock stock) {
+        return tickerMatches(stock.ticker);
+    }
+
+    /**
+     * If a particular ticker matches a stock
+     * @param ticker the ticker to check
+     * @return true if match, false if not
+     */
+    public boolean tickerMatches(String ticker) {
+        return this.ticker.equals(ticker);
+    }
 }

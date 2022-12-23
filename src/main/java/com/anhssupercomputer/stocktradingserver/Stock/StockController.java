@@ -1,6 +1,8 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +28,7 @@ public class StockController {
     /**
      * @return A list of all stocks stored
      */
-    @GetMapping
+    @GetMapping("all")
     public List<Stock> getStocks() {
         return service.getStocks();
     }
@@ -44,5 +46,16 @@ public class StockController {
     public String createStock(@RequestBody String name, @RequestBody String ticker, @RequestBody double price, @RequestBody int totalVolume) throws DuplicateTickerException {
         Stock stock = new Stock(name, ticker, price, totalVolume, service);
         return "Successfully added Stock: \n" + stock;
+    }
+
+    /**
+     * Returns the stock matching the specified ticker
+     * @param ticker the ticker to search for
+     * @return the stock with the matching ticker
+     * @throws NotFoundException if no stock is found with a matching ticker
+     */
+    @GetMapping
+    public Stock getStockByTicker(@RequestParam String ticker) throws NotFoundException {
+        return service.getStockByTicker(ticker);
     }
 }

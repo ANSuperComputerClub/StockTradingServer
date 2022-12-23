@@ -7,9 +7,11 @@ import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
@@ -90,7 +92,7 @@ public class Portfolio {
             // We use this a lot
             final Stock stock = order.getStock();
 
-            // If the transaction is a buy:
+            // If the transaction is a buy: 
             if (order.getType() == OrderType.BUY) {
                 // If we already own some, we just add to the order entry
                 // IF we don't already own any, we just add the transaction

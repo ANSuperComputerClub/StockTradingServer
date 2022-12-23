@@ -19,7 +19,8 @@ public class StockService {
     private final ArrayList<Stock> stockList;
 
     public StockService(@Autowired PriceService priceService) {
-        // TODO Acutally load this from a Database (we have to add databse stuff before then)
+        // TODO Acutally load this from a Database (we have to add databse stuff before
+        // then)
         stockList = new ArrayList<>();
         this.priceService = priceService;
     }
@@ -60,12 +61,8 @@ public class StockService {
      * @throws NotFoundException if no stock was found
      */
     public Stock getStockByTicker(String ticker) throws NotFoundException {
-        for (Stock stock : stockList) {
-            if (stock.getTicker().equals(ticker)) {
-                return stock;
-            }
-        }
-        throw new NotFoundException();
+        return stockList.stream().filter(stock -> stock.tickerMatches(ticker)).findFirst()
+                .orElseThrow(NotFoundException::new);
     }
 
     /**
@@ -73,7 +70,7 @@ public class StockService {
      * @return if the ticker is in use or not
      */
     public boolean tickerInUse(String ticker) {
-        return stockList.stream().anyMatch(stock -> stock.getTicker().equals(ticker));
+        return stockList.stream().anyMatch(stock -> stock.tickerMatches(ticker));
     }
 
     public void clearStocks() {
@@ -85,12 +82,13 @@ public class StockService {
      */
     public String generateUnusedTicker() {
         String ticker;
-        do ticker = new String(new char[]{
-                Util.generateRandomCharacter(),
-                Util.generateRandomCharacter(),
-                Util.generateRandomCharacter(),
-                Util.generateRandomCharacter()
-        }); while (tickerInUse(ticker));
+        do ticker = new String(new char[] {
+            Util.generateRandomCharacter(),
+            Util.generateRandomCharacter(),
+            Util.generateRandomCharacter(),
+            Util.generateRandomCharacter()
+        });
+        while (tickerInUse(ticker));
 
         return ticker;
     }
