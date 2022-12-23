@@ -1,6 +1,6 @@
 package com.anhssupercomputer.stocktradingserver.Trader;
-
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class TraderService {
      * Adds a trader to the trader list
      * @param trader
      */
-    public void addTrader(Trader trader) {
+    public void addTrader(@NotNull Trader trader) {
         traderList.add(trader);
     }
 

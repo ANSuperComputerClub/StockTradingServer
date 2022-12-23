@@ -75,10 +75,10 @@ public class StockService {
         String ticker;
 
         do {
-            int numOne = (int) (Math.random() * 26) + 65;
-            int numTwo = (int) (Math.random() * 26) + 65;
-            int numThree = (int) (Math.random() * 26) + 65;
-            int numFour = (int) (Math.random() * 26) + 65;
+            int numOne = (int) (Math.random() * 26) + 'A';
+            int numTwo = (int) (Math.random() * 26) + 'A';
+            int numThree = (int) (Math.random() * 26) + 'A';
+            int numFour = (int) (Math.random() * 26) + 'A';
 
             // Convert to chars
             char charOne = (char) numOne;
