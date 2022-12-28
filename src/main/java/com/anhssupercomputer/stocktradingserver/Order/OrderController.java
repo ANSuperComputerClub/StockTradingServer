@@ -2,15 +2,15 @@ package com.anhssupercomputer.stocktradingserver.Order;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
+import com.anhssupercomputer.stocktradingserver.Price.FavorabilityFunction;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 import com.anhssupercomputer.stocktradingserver.Trader.Trader;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("order")
@@ -25,9 +25,12 @@ public class OrderController {
      */
     private final TraderService traderService;
 
-    public OrderController(@Autowired StockService stockService, @Autowired TraderService traderService) {
+    private final OrderService orderService;
+
+    public OrderController(@Autowired OrderService orderService, @Autowired StockService stockService, @Autowired TraderService traderService) {
         this.stockService = stockService;
         this.traderService = traderService;
+        this.orderService = orderService;
     }
 
     /**
@@ -36,10 +39,9 @@ public class OrderController {
      * @param ticker   the ticker of the stock to order
      * @param type     the type of transaction
      * @param quantity the quantity of the transaction
-     * @return a message verifying the success
      */
     @PostMapping
-    public String createOrder(@RequestBody int id, @RequestBody String ticker, @RequestBody String type, @RequestBody int quantity) throws NotFoundException, IllegalTransactionException {
+    public void createOrder(@RequestBody int id, @RequestBody String ticker, @RequestBody String type, @RequestBody int quantity) throws NotFoundException, IllegalTransactionException {
         // Parse data
         Stock stock = stockService.getStockByTicker(ticker);
         OrderType orderType = type.equals("BUY") ? OrderType.BUY : OrderType.SELL;
@@ -49,12 +51,19 @@ public class OrderController {
 
         // Create order
         Order order = new Order(stock, orderType, quantity);
+        orderService.saveOrder(order);
 
         // TODO: Save it to user
         trader.getPortfolio().addTransaction(order);
 
         // TODO: Finish implementing this function
-        // Blockers: User storage (so we can add it to the user portfolio)
-        return "";
+    }
+
+    /**
+     * @return All orders ever
+     */
+    @GetMapping
+    public List<Order> getOrders() {
+        return orderService.getOrders();
     }
 }

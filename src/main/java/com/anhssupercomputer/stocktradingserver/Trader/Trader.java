@@ -12,6 +12,8 @@ import java.util.List;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 
+import static com.anhssupercomputer.stocktradingserver.Trader.TradingStrategy.defaultStrategy;
+
 public class Trader {
     private static int nextId = 0;
     /**
@@ -25,40 +27,6 @@ public class Trader {
     private final Portfolio portfolio;
 
     private final TradingStrategy strategy;
-
-    private static final TradingStrategy defaultStrategy = (trader, orderController, priceService, stockService) -> {
-        // Find and sell stocks that have low favorability
-        for (Stock stock : trader.getPortfolio().getStocks().keySet()) {
-            if (priceService.getFavorability(stock) < 0) {
-                try {
-                    orderController.createOrder(trader.getId(), stock.getTicker(), "SELL", trader.getPortfolio().getStocks().get(stock));
-                } catch (NotFoundException | IllegalTransactionException e) {
-                    System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
-                }
-            }
-        }
-
-        ArrayList<Stock> rankedStocks = stockService.getRankedStocks();
-
-        for (Stock stock : rankedStocks) {
-            double funds = trader.getPortfolio().getFunds();
-
-            if (stock.getPrice() < funds) {
-                try {
-                    int quantity = (int) (funds / stock.getPrice());
-
-                    // Makes sure it doesn't buy more that it is allowed
-                    if (quantity > stock.getAvailableVolume()) {
-                        quantity = stock.getAvailableVolume();
-                    }
-
-                    orderController.createOrder(trader.getId(), stock.getTicker(), "BUY", quantity);
-                } catch (NotFoundException | IllegalTransactionException e) {
-                    System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
-                }
-            }
-        }
-    };
 
     public Trader(String username, String key, double startingFunds, boolean isFakeTrader) {
         id = makeId();

@@ -21,10 +21,10 @@ public class MarketTests {
 
     /**
      * Makes sure that market gets initialized with correct number of traders and returns initialization time
-     * @throws NoMarketException
+     * @throws NoMarketException if the market doesn't exist
      */
     @Test
-    public void createMarketTest() throws NoMarketException, InterruptedException, DuplicateTickerException {
+    public void createMarketTest() throws NoMarketException, DuplicateTickerException {
 
         long startTimeMS = System.currentTimeMillis();
 
