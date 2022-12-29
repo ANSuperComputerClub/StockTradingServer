@@ -64,7 +64,7 @@ public class Portfolio {
     public Map<Stock, Integer> getStocks() {
         stockLock.readLock().lock();
         try {
-            return stocks;
+            return new HashMap<>(stocks);
         } finally {
             stockLock.readLock().unlock();
         }
@@ -116,6 +116,10 @@ public class Portfolio {
                 return value - order.getQuantity();
             });
 
+            if(stocks.get(stock) == 0) {
+                stocks.remove(stock);
+            }
+
             // World's greatest error handling system!!
             if (shouldThrowError.get()) {
                 throw new IllegalTransactionException();
@@ -132,16 +136,12 @@ public class Portfolio {
      * @return the total value of the portfolio
      */
     public double getTotalBalance() {
-        stockLock.readLock().lock();
-        try {
-            double total = funds;
-            for (var entry : stocks.entrySet()) {
-                total += entry.getKey().getPrice() * entry.getValue();
-            }
-            return total;
-        } finally {
-            stockLock.readLock().unlock();
+        HashMap<Stock, Integer> temp = new HashMap<>(stocks);
+        double total = funds;
+        for(var entry: temp.entrySet()) {
+            total += entry.getKey().getPrice() * entry.getValue();
         }
+        return total;
     }
 
     public String toString() {

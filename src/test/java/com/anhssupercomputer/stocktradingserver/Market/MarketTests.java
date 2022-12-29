@@ -46,7 +46,7 @@ public class MarketTests {
 
     @Test
     public void viewMarketSimulation() throws DuplicateTickerException, NoMarketException, NotFoundException, InterruptedException {
-        marketService.createMarket(10, 200, 1000);
+        marketService.createMarket(20, 100, 1000);
 
         marketService.startMarket();
 
@@ -63,7 +63,7 @@ public class MarketTests {
                 }
             }*/
             if (System.currentTimeMillis() - last > 10000) {
-                System.out.println("Period: [" + period + "]\n[PROFIT]: " + (trader.getPortfolio().getTotalBalance() - 10000) + " [AVAILABLE CASH]: " + trader.getPortfolio().getFunds() +  "\n" + trader.getPortfolio());
+                System.out.println("Period: [" + period + "]\n[PROFIT]: " + (trader.getPortfolio().getTotalBalance() - 10000)); // + " [AVAILABLE CASH]: " + trader.getPortfolio().getFunds() +  "\n" + trader.getPortfolio());
                 period++;
                 last = System.currentTimeMillis();
             }

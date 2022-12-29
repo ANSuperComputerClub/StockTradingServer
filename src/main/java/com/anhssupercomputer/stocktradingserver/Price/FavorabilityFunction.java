@@ -34,7 +34,7 @@ public interface FavorabilityFunction {
         }
 
         // Square them
-        derivatives = derivatives.stream().map(val -> val * val).toList();
+        derivatives = derivatives.stream().map(val -> val * val * val).toList();
 
         // Add them all up and return
         return derivatives.stream().reduce(Double::sum).orElse(0.0);

@@ -7,7 +7,10 @@ import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A strategy that a bot trader will use when trading is automated.
@@ -41,7 +44,8 @@ public interface TradingStrategy {
 
             if (stock.getPrice() < funds) {
                 try {
-                    int quantity = (int) (funds / stock.getPrice());
+                    int quantity = (int) (funds / (3 * stock.getPrice()));
+                    if(quantity == 0) return;
 
                     // Makes sure it doesn't buy more that it is allowed
                     if (quantity > stock.getAvailableVolume()) {

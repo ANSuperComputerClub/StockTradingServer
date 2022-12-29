@@ -44,7 +44,7 @@ public class Market extends AbstractSystem {
         for (int i = 0; i < stockNumber; i++) {
 
             String ticker = stockService.generateUnusedTicker();
-            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 100d, 999999999));
+            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 1000 + 30, 100000));
         }
     }
 
