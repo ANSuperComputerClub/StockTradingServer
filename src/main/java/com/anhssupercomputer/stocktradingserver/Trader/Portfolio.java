@@ -47,8 +47,9 @@ public class Portfolio {
     /**
      * @param change Change in funds will be added to the total funds.
      */
-    public void changeFunds(double change) {
+    public void changeFunds(double change) throws IllegalTransactionException {
         //    funds += change;
+        if(funds + change <= 0) throw new IllegalTransactionException();
         updateFunds(val -> val + change);
     }
 
@@ -93,7 +94,7 @@ public class Portfolio {
                 // IF we don't already own any, we just add the transaction
                 stocks.computeIfPresent(stock, (key, value) -> value + order.getQuantity());
                 stocks.computeIfAbsent(stock, (key) -> order.getQuantity());
-                changeFunds(-(stock.getPrice() * order.getQuantity()));
+                changeFunds(-1 * (stock.getPrice() * order.getQuantity()));
                 stock.updateAvailableVolume(order.getQuantity());
                 return;
             }
@@ -133,7 +134,7 @@ public class Portfolio {
     public double getTotalBalance() {
         stockLock.readLock().lock();
         try {
-            double total = 0;
+            double total = funds;
             for (var entry : stocks.entrySet()) {
                 total += entry.getKey().getPrice() * entry.getValue();
             }
@@ -141,5 +142,13 @@ public class Portfolio {
         } finally {
             stockLock.readLock().unlock();
         }
+    }
+
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for(var entry: stocks.entrySet()) {
+            output.append("[STOCK]: ").append(entry.getKey().getTicker()).append(" [CURRENT PRICE]: ").append(entry.getKey().getPrice()).append(" [TOTAL VALUE]: ").append(entry.getKey().getPrice() * entry.getValue()).append("\n");
+        }
+        return output.toString();
     }
 }

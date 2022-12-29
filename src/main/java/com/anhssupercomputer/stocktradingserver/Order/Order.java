@@ -60,4 +60,8 @@ public class Order {
     public Date getDate() {
         return date;
     }
+
+    public String toString() {
+        return stock.getTicker() + " [] " + quantity + " [] " + (type == OrderType.BUY ? "BUY" : "SELL");
+    }
 }

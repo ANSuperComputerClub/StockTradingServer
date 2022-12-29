@@ -53,7 +53,7 @@ public class Stock {
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = 0;
-        priceHistory = new CircularFifoQueue<>(20);
+        priceHistory = new CircularFifoQueue<>(50);
         setPrice(price);
     }
 
@@ -107,6 +107,7 @@ public class Stock {
     }
 
     public void setPrice(double price) {
+        if(price < 0) return;
         priceHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
         this.price = price;
     }
@@ -132,10 +133,9 @@ public class Stock {
     /**
      * Updates volume of stock available
      */
-    public boolean updateAvailableVolume(int amountToPurchase) {
-        if (amountToPurchase > availableVolume) return false;
+    public void updateAvailableVolume(int amountToPurchase) {
+        if (amountToPurchase > availableVolume) return;
         availableVolume -= amountToPurchase;
-        return true;
     }
 
     /**

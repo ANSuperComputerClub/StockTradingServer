@@ -21,6 +21,7 @@ public class MarketTests {
 
     /**
      * Makes sure that market gets initialized with correct number of traders and returns initialization time
+     *
      * @throws NoMarketException if the market doesn't exist
      */
     @Test
@@ -28,7 +29,7 @@ public class MarketTests {
 
         long startTimeMS = System.currentTimeMillis();
 
-        marketService.createMarket(5000, 500,20);
+        marketService.createMarket(5000, 500, 20);
 
         long elapsedTimeMS = System.currentTimeMillis() - startTimeMS;
         System.out.println("Market Initialization Time in MS: " + elapsedTimeMS);
@@ -38,24 +39,32 @@ public class MarketTests {
         assert (traderService.getTraderNumber() == 5000);
         assert (stockService.getStocks().size() == 500);
 
-        for(Stock stock : stockService.getStocks()) {
-            System.out.println(stock.getTicker() + " " + stock.getPrice() + " " + stock.getTotalVolume());
+        for (Stock stock : stockService.getStocks()) {
+            // System.out.println(stock.getTicker() + " " + stock.getPrice() + " " + stock.getTotalVolume());
         }
     }
 
     @Test
-    public void viewMarketSimulation() throws DuplicateTickerException, NoMarketException, NotFoundException {
-        marketService.createMarket(200, 10, 1000);
+    public void viewMarketSimulation() throws DuplicateTickerException, NoMarketException, NotFoundException, InterruptedException {
+        marketService.createMarket(10, 200, 1000);
 
         marketService.startMarket();
 
         Trader tracked = traderService.getTraderById(0);
 
-        Stock stock = stockService.getStocks().get(0);
         long last = 0;
-        while(true) {
-            if(System.currentTimeMillis() - last > 1) {
-                System.out.println(stock.getTicker() + " " + stock.getPrice() + " " + stock.getAvailableVolume());
+        var period = 0;
+        var trader = traderService.getAllTraders().get((int) (Math.random() * traderService.getAllTraders().size()));
+        while (true) {
+            /*for(Stock stock: stockService.getStocks()) {
+                if(System.currentTimeMillis() - last > 1) {
+                    System.out.println(stock.getTicker() + " " + stock.getPrice() + " " + stock.getAvailableVolume());
+                    last = System.currentTimeMillis();
+                }
+            }*/
+            if (System.currentTimeMillis() - last > 10000) {
+                System.out.println("Period: [" + period + "]\n[PROFIT]: " + (trader.getPortfolio().getTotalBalance() - 10000) + " [AVAILABLE CASH]: " + trader.getPortfolio().getFunds() +  "\n" + trader.getPortfolio());
+                period++;
                 last = System.currentTimeMillis();
             }
         }

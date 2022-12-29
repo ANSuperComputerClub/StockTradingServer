@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Service class for the stock
@@ -61,7 +62,7 @@ public class StockService {
      * @throws NotFoundException if no stock was found
      */
     public Stock getStockByTicker(String ticker) throws NotFoundException {
-        return stockList.stream().filter(stock -> stock.tickerMatches(ticker)).findFirst()
+        return new ArrayList<>(stockList).stream().filter(stock -> stock.tickerMatches(ticker)).findFirst()
                 .orElseThrow(NotFoundException::new);
     }
 

@@ -22,14 +22,14 @@ public interface TradingStrategy {
      */
     void run(Trader trader, OrderController orderController, PriceService priceService, StockService stockService);
 
-    TradingStrategy defaultStrategy = (trader, orderController, priceService, stockService) -> {
+    TradingStrategy matthewDefault = (trader, orderController, priceService, stockService) -> {
         // Find and sell stocks that have low favorability
         for (Stock stock : trader.getPortfolio().getStocks().keySet()) {
             if (priceService.getFavorability(stock) < 0) {
                 try {
                     orderController.createOrder(trader.getId(), stock.getTicker(), "SELL", trader.getPortfolio().getStocks().get(stock));
                 } catch (NotFoundException | IllegalTransactionException e) {
-                    System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
+                    // System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
                 }
             }
         }
@@ -50,9 +50,15 @@ public interface TradingStrategy {
 
                     orderController.createOrder(trader.getId(), stock.getTicker(), "BUY", quantity);
                 } catch (NotFoundException | IllegalTransactionException e) {
-                    System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
+                    // System.out.println("Could not make transaction for trader: " + trader.getId() + " for stock: " + stock.getName());
                 }
             }
         }
     };
+
+
+    /**
+     * The Default trading strategy. It's evil, we need to change this.
+     */
+    TradingStrategy _default = matthewDefault;
 }

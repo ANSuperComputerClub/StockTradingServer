@@ -9,6 +9,8 @@ import com.anhssupercomputer.stocktradingserver.Trader.Trader;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
 import com.anhssupercomputer.stocktradingserver.Utility.AbstractSystem;
 
+import java.util.ArrayList;
+
 public class Market extends AbstractSystem {
 
     private final TraderService traderService;
@@ -42,7 +44,7 @@ public class Market extends AbstractSystem {
         for (int i = 0; i < stockNumber; i++) {
 
             String ticker = stockService.generateUnusedTicker();
-            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 100d, (int) (Math.random() * 10000d)));
+            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 100d, 999999999));
         }
     }
 
@@ -87,7 +89,7 @@ public class Market extends AbstractSystem {
     protected void controlLoop() {
         if (!stopped) {
             // Run through each trader and have them take their actions
-            for (Trader trader : traderService.getAllTraders()) {
+            for (Trader trader : new ArrayList<>(traderService.getAllTraders())) {
                 // If the trader is fake
                 if (trader.isFakeTrader()) {
                     trader.executeStrategy(orderController, priceService, stockService);

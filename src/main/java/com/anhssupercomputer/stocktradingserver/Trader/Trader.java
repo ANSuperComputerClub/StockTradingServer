@@ -1,18 +1,12 @@
 package com.anhssupercomputer.stocktradingserver.Trader;
 
-import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
-import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 import com.anhssupercomputer.stocktradingserver.Order.Order;
 import com.anhssupercomputer.stocktradingserver.Order.OrderController;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
-
-import static com.anhssupercomputer.stocktradingserver.Trader.TradingStrategy.defaultStrategy;
 
 public class Trader {
     private static int nextId = 0;
@@ -34,7 +28,7 @@ public class Trader {
         this.key = key;
         portfolio = new Portfolio(startingFunds);
         this.isFakeTrader = isFakeTrader;
-        this.strategy = defaultStrategy;
+        this.strategy = TradingStrategy._default;
     }
 
     public Trader(String username, String key, double startingFunds, boolean isFakeTrader, TradingStrategy strategy) {

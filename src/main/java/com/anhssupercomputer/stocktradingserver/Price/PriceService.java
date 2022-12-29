@@ -1,21 +1,15 @@
 package com.anhssupercomputer.stocktradingserver.Price;
 
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
-import com.anhssupercomputer.stocktradingserver.Stock.StockPriceEntry;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-
-import static com.anhssupercomputer.stocktradingserver.Price.FavorabilityFunction.defaultFavorabilityFunction;
-import static com.anhssupercomputer.stocktradingserver.Price.PricingFunction.defaultPricingFunction;
 
 @Component
 public class PriceService {
    private final PricingFunction pricingFunction;
    private final FavorabilityFunction favorabilityFunction;
     public PriceService() {
-        pricingFunction = defaultPricingFunction;
-        favorabilityFunction = defaultFavorabilityFunction;
+        pricingFunction = PricingFunction._default;
+        favorabilityFunction = FavorabilityFunction._default;
     }
 
     public PriceService(PricingFunction pricingFunction, FavorabilityFunction favorabilityFunction) {
