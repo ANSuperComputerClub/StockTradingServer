@@ -1,6 +1,7 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import com.anhssupercomputer.stocktradingserver.Order.OrderController;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
@@ -25,7 +26,7 @@ public class Market extends AbstractSystem {
      * @param traderNumber number of trader
      * @param period       period in ms that the simulation runs at
      */
-    protected Market(int traderNumber, int stockNumber, int period, TraderService traderService, StockService stockService, PriceService priceService, OrderController orderController) throws DuplicateTickerException {
+    protected Market(int traderNumber, int stockNumber, int period, TraderService traderService, StockService stockService, PriceService priceService, OrderController orderController) throws DuplicateTickerException, IllegalTransactionException {
         super(period);
         this.traderService = traderService;
         this.stockService = stockService;
@@ -93,12 +94,15 @@ public class Market extends AbstractSystem {
                 // If the trader is fake
                 if (trader.isFakeTrader()) {
                     trader.executeStrategy(orderController, priceService, stockService);
-                }
-            }
+                    // After every iteration, update the price of the stock
+                    for(Stock stock : stockService.getStocks()) {
+                        try {
+                            stockService.updateStockPrice(stock);
+                        } catch(IllegalTransactionException ignored) {
 
-            // After every iteration, update the price of the stock
-            for(Stock stock : stockService.getStocks()) {
-                stockService.updateStockPrice(stock);
+                        }
+                    }
+                }
             }
         }
     }

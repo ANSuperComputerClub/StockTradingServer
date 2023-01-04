@@ -2,9 +2,11 @@ package com.anhssupercomputer.stocktradingserver.Stock;
 
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A representation of a Stock object, to be exchanged on the server by way of Orders.
@@ -25,7 +27,12 @@ public class Stock {
      * The total volume of the stock
      */
     private final int totalVolume;
+    /**
+     * Short term price history of the stock in a circular fifo queue
+     */
     private final CircularFifoQueue<StockPriceEntry> priceHistory;
+
+    private final List<StockPriceEntry> longTermHistory;
     /**
      * The price of the stock
      */
@@ -39,6 +46,8 @@ public class Stock {
      */
     private double dividend;
 
+    private double longTermHistoryLastUpdated = 0;
+
     /**
      * Stock constructor without dividend
      *
@@ -47,13 +56,14 @@ public class Stock {
      * @param price       The price of the stock, leave at 5 for default
      * @param totalVolume The total available volume
      */
-    public Stock(String name, String ticker, double price, int totalVolume) {
+    public Stock(String name, String ticker, double price, int totalVolume) throws IllegalTransactionException {
         this.name = name;
         this.ticker = ticker;
         this.totalVolume = totalVolume;
         this.availableVolume = totalVolume;
         this.dividend = 0;
         priceHistory = new CircularFifoQueue<>(50);
+        longTermHistory = new ArrayList<>();
         setPrice(price);
     }
 
@@ -66,7 +76,7 @@ public class Stock {
      * @param totalVolume The total available volume
      * @param dividend    The dividend earned per month
      */
-    public Stock(String name, String ticker, double price, int totalVolume, double dividend) {
+    public Stock(String name, String ticker, double price, int totalVolume, double dividend) throws IllegalTransactionException {
         this(name, ticker, price, totalVolume);
         this.dividend = dividend;
     }
@@ -80,7 +90,7 @@ public class Stock {
      * @param totalVolume The total available volume
      * @param service     The service that should store this stock
      */
-    public Stock(String name, String ticker, double price, int totalVolume, StockService service) throws DuplicateTickerException {
+    public Stock(String name, String ticker, double price, int totalVolume, StockService service) throws DuplicateTickerException, IllegalTransactionException {
         this(name, ticker, price, totalVolume);
         service.saveStock(this);
     }
@@ -106,8 +116,12 @@ public class Stock {
         return price;
     }
 
-    public void setPrice(double price) {
-        if(price < 0) return;
+    public void setPrice(double price) throws IllegalTransactionException {
+        if(price < 0) throw new IllegalTransactionException();
+        if(System.currentTimeMillis() - longTermHistoryLastUpdated > 30000) {
+            longTermHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
+            longTermHistoryLastUpdated = System.currentTimeMillis();
+        }
         priceHistory.add(new StockPriceEntry(price, System.currentTimeMillis()));
         this.price = price;
     }
@@ -144,9 +158,7 @@ public class Stock {
     public ArrayList<StockPriceEntry> getPriceHistory() {
         ArrayList<StockPriceEntry> sortedList = new ArrayList<>(20);
 
-        for (Object stockPriceEntry : priceHistory) {
-            sortedList.add((StockPriceEntry) stockPriceEntry);
-        }
+        sortedList.addAll(priceHistory);
 
         sortedList.sort(new StockPriceEntryTimeComparator());
         return sortedList;

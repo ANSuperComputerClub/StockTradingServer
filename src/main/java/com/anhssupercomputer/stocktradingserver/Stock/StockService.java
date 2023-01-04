@@ -1,6 +1,7 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Utility.Util;
@@ -101,7 +102,7 @@ public class StockService {
         return sortedStockList;
     }
 
-    public void updateStockPrice(Stock stock) {
+    public void updateStockPrice(Stock stock) throws IllegalTransactionException {
         stock.setPrice(priceService.getPrice(stock));
     }
 }

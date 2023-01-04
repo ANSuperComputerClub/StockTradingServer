@@ -1,6 +1,7 @@
 package com.anhssupercomputer.stocktradingserver.Market;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NoMarketException;
 import com.anhssupercomputer.stocktradingserver.Order.OrderController;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
@@ -61,6 +62,8 @@ public class MarketService {
         } catch (Exception e) {
             // Returns false if a failure occurs.
             return false;
+        } catch (IllegalTransactionException e) {
+            throw new RuntimeException(e);
         }
     }
 

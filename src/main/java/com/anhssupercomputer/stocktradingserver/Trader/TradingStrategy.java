@@ -27,7 +27,7 @@ public interface TradingStrategy {
 
     TradingStrategy matthewDefault = (trader, orderController, priceService, stockService) -> {
         // Find and sell stocks that have low favorability
-        for (Stock stock : trader.getPortfolio().getStocks().keySet()) {
+        for (Stock stock : new HashMap<>(trader.getPortfolio().getStocks()).keySet()) {
             if (priceService.getFavorability(stock) < 0) {
                 try {
                     orderController.createOrder(trader.getId(), stock.getTicker(), "SELL", trader.getPortfolio().getStocks().get(stock));

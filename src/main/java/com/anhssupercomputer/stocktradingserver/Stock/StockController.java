@@ -1,6 +1,7 @@
 package com.anhssupercomputer.stocktradingserver.Stock;
 
 import com.anhssupercomputer.stocktradingserver.Exceptions.DuplicateTickerException;
+import com.anhssupercomputer.stocktradingserver.Exceptions.IllegalTransactionException;
 import com.anhssupercomputer.stocktradingserver.Exceptions.NotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class StockController {
      * @return a message if the creation was successful, an error otherwise
      */
     @PostMapping
-    public String createStock(@RequestBody String name, @RequestBody String ticker, @RequestBody double price, @RequestBody int totalVolume) throws DuplicateTickerException {
+    public String createStock(@RequestBody String name, @RequestBody String ticker, @RequestBody double price, @RequestBody int totalVolume) throws DuplicateTickerException, IllegalTransactionException {
         Stock stock = new Stock(name, ticker, price, totalVolume, service);
         return "Successfully added Stock: \n" + stock;
     }
@@ -57,5 +58,10 @@ public class StockController {
     @GetMapping
     public Stock getStockByTicker(@RequestParam String ticker) throws NotFoundException {
         return service.getStockByTicker(ticker);
+    }
+
+    @ExceptionHandler
+    public Exception handleException(Exception e) {
+        return e;
     }
 }

@@ -8,6 +8,7 @@ import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
 import com.anhssupercomputer.stocktradingserver.Trader.Trader;
 import com.anhssupercomputer.stocktradingserver.Trader.TraderService;
+import com.anhssupercomputer.stocktradingserver.Utility.Constants;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,11 +47,9 @@ public class MarketTests {
 
     @Test
     public void viewMarketSimulation() throws DuplicateTickerException, NoMarketException, NotFoundException, InterruptedException {
-        marketService.createMarket(20, 100, 1000);
+        marketService.createMarket(Constants.TRADERS, Constants.STOCK_NUMBER, Constants.PERIOD);
 
         marketService.startMarket();
-
-        Trader tracked = traderService.getTraderById(0);
 
         long last = 0;
         var period = 0;
@@ -62,8 +61,9 @@ public class MarketTests {
                     last = System.currentTimeMillis();
                 }
             }*/
-            if (System.currentTimeMillis() - last > 10000) {
-                System.out.println("Period: [" + period + "]\n[PROFIT]: " + (trader.getPortfolio().getTotalBalance() - 10000)); // + " [AVAILABLE CASH]: " + trader.getPortfolio().getFunds() +  "\n" + trader.getPortfolio());
+            if (System.currentTimeMillis() - last > Constants.PERIOD) {
+                var profit = (trader.getPortfolio().getTotalBalance() - Constants.PERIOD);
+                System.out.println("Period: [" + period + "]\n[PROFIT]: " + profit + " [AVAILABLE CASH]: " + trader.getPortfolio().getFunds()); // +  "\n" + trader.getPortfolio());
                 period++;
                 last = System.currentTimeMillis();
             }

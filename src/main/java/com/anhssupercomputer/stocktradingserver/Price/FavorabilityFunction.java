@@ -66,5 +66,5 @@ public interface FavorabilityFunction {
         return (riseCount - (history.size() / 2.0)) + (derivative / stock.getPrice());
     };
 
-    FavorabilityFunction _default = rise;
+    FavorabilityFunction _default = matthewRise;
 }
