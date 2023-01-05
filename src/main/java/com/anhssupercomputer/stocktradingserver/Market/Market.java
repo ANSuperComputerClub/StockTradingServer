@@ -39,13 +39,13 @@ public class Market extends AbstractSystem {
 
 
         for (int i = 0; i < traderNumber; i++) {
-            traderService.addTrader(new Trader("", "", 10000,true));
+            traderService.addTrader(new Trader("", "", 100000,true));
         }
 
         for (int i = 0; i < stockNumber; i++) {
 
             String ticker = stockService.generateUnusedTicker();
-            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 1000 + 30, 100000));
+            stockService.saveStock(new Stock(ticker, ticker, Math.random() * 30 + 30, 999999999));
         }
     }
 
