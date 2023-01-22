@@ -6,11 +6,8 @@ import com.anhssupercomputer.stocktradingserver.Order.OrderController;
 import com.anhssupercomputer.stocktradingserver.Price.PriceService;
 import com.anhssupercomputer.stocktradingserver.Stock.Stock;
 import com.anhssupercomputer.stocktradingserver.Stock.StockService;
-
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A strategy that a bot trader will use when trading is automated.

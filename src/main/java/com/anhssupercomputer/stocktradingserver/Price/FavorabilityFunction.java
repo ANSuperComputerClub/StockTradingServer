@@ -24,7 +24,7 @@ public interface FavorabilityFunction {
      */
     FavorabilityFunction rise = (stock) -> {
         ArrayList<StockPriceEntry> history = stock.getPriceHistory();
-        List<Double> derivatives = new ArrayList<>();
+        List<Double> derivatives = new ArrayList<>(history.size() - 1);
 
         // Calculate derivatives
         for(int i = 0; i < history.size() - 1; i++) {
